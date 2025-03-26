@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { AntDesign } from '@expo/vector-icons'; // Requiere instalar @expo/vector-icons
 
-const AuthScreen = ({ navigation }: any) => {
+const ProfileScreen = ({ navigation }: any) => {
   const [isLogged, setIsLogged] = React.useState(false);
 
   return (
@@ -160,4 +160,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AuthScreen;
+export default ProfileScreen;
