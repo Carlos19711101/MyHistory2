@@ -8,7 +8,7 @@ const AuthScreen = ({ navigation }: any) => {
 
   return (
     <LinearGradient
-      colors={['#88D3CE', '#6E45E2']} // Degradado naranja a amarillo
+      colors={['#88D3CE', '#6E45E2']} // Degradado de colores
       style={styles.container}
     >
       <View style={styles.content}>
@@ -34,11 +34,11 @@ const AuthScreen = ({ navigation }: any) => {
                      
             <TouchableOpacity 
                  // boton para pasar a la pantalla de GeneralScreen
-                      style={styles.button}
-                      onPress={() => navigation.navigate('General')}
+                      style={[styles.button, styles.googleButton]}
+                      onPress={() => navigation.navigate('Profile')}
                       activeOpacity={0.7} // Feedback táctil suave
                     >
-                      <Text style={styles.buttonText}>Voy para General</Text>
+                      <Text style={styles.buttonText}>Voy para Profile</Text>
             </TouchableOpacity>
             
             <TouchableOpacity 
@@ -130,6 +130,10 @@ const styles = StyleSheet.create({
     borderColor: '#FF7E5F',
   },
   buttonText: {
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  buttonText2: {
     fontSize: 16,
     fontWeight: '600',
   },

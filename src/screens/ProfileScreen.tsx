@@ -1,162 +1,317 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { AntDesign } from '@expo/vector-icons'; // Requiere instalar @expo/vector-icons
+import { 
+  View, 
+  Text, 
+  Image, 
+  StyleSheet, 
+  TouchableOpacity, 
+  ScrollView, 
+  Dimensions,
+  Platform 
+} from 'react-native';
 
-const ProfileScreen = ({ navigation }: any) => {
-  const [isLogged, setIsLogged] = React.useState(false);
+const { width, height } = Dimensions.get('window');
+
+const ProfileScreen = () => {
+  // Datos de ejemplo del usuario
+  const user = {
+    name: 'María González',
+    username: '@mariagonz',
+    bio: 'Desarrolladora móvil | Amante del café | Viajera frecuente',
+    followers: 1243,
+    following: 567,
+    posts: 86,
+    avatar: 'https://randomuser.me/api/portraits/women/44.jpg',
+    website: 'mariagonzalez.dev',
+    joinedDate: 'Junio 2020',
+  };
+
+  // Tamaños responsivos
+  const avatarSize = width * 0.8;
+  const editButtonSize = avatarSize * 0.20;
 
   return (
-    <LinearGradient
-      colors={['#88D3CE', '#6E45E2']} // Degradado naranja a amarillo
+    <ScrollView 
       style={styles.container}
+      contentContainerStyle={styles.contentContainer}
+      showsVerticalScrollIndicator={false}
     >
-      <View style={styles.content}>
-        <Image 
-          // source={require('./assets/auth-icon.png')} // Reemplaza con tu imagen
-          source={{ uri: 'https://via.placeholder.com/100' }} 
-          style={styles.logo}
-        />
+      {/* Encabezado del perfil */}
+      <View style={styles.header}>
+        <View style={styles.avatarContainer}>
+          <Image 
+            source={{ uri: user.avatar }} 
+            style={[
+              styles.avatar, 
+              { 
+                width: avatarSize, 
+                height: avatarSize,
+                borderRadius: avatarSize / 2 
+              }
+            ]} 
+            resizeMode="cover"
+          />
+          <TouchableOpacity 
+            style={[
+              styles.editAvatarButton,
+              {
+                width: editButtonSize,
+                height: editButtonSize,
+                borderRadius: editButtonSize / 2,
+                right: editButtonSize * 0.2,
+                bottom: editButtonSize * 0.2
+              }
+            ]}
+          >
+            <Text style={styles.editAvatarButtonText}>✏️</Text>
+          </TouchableOpacity>
+        </View>
         
-        {isLogged ? (
-          <>
-            <Text style={styles.welcomeText}>¡Bienvenido de vuelta!</Text>
-            <TouchableOpacity 
-              style={[styles.button, styles.mainButton]}
-              onPress={() => navigation.navigate('Home')}
-            >
-              <Text style={styles.buttonText}>Continuar a la App</Text>
-            </TouchableOpacity>
-          </>
-        ) : (
-          <>
-            <Text style={styles.title}>Inicia Sesión</Text>
-            
-            <TouchableOpacity 
-              style={[styles.button, styles.googleButton]}
-              onPress={() => console.log('Google login')}
-            >
-              <AntDesign name="google" size={20} color="white" />
-              <Text style={[styles.buttonText, { marginLeft: 10 }]}>Continuar con Google</Text>
-            </TouchableOpacity>
-            
-            <TouchableOpacity 
-              style={[styles.button, styles.googleButton]}
-              onPress={() => console.log('Google login')}
-            >
-              <AntDesign name="google" size={20} color="white" />
-              <Text style={[styles.buttonText, { marginLeft: 10 }]}>Continuar con Google</Text>
-            </TouchableOpacity>
-
-            <View style={styles.divider}>
-              <View style={styles.dividerLine} />
-              <Text style={styles.dividerText}>o</Text>
-              <View style={styles.dividerLine} />
-            </View>
-
-            <TouchableOpacity 
-              style={[styles.button, styles.emailButton]}
-              onPress={() => navigation.navigate('Login')}
-            >
-              <Text style={[styles.buttonText, { color: '#FF7E5F' }]}>Usar correo electrónico</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity 
-              style={styles.registerLink}
-              onPress={() => navigation.navigate('Register')}
-            >
-              <Text style={styles.registerText}>¿No tienes cuenta? <Text style={styles.registerBold}>Regístrate</Text></Text>
-            </TouchableOpacity>
-          </>
-        )}
+        {/* <View style={styles.statsContainer}>
+          <View style={styles.statItem}>
+            <Text style={styles.statNumber}>{user.posts}</Text>
+            <Text style={styles.statLabel}>Publicaciones</Text>
+          </View>
+          <View style={styles.statItem}>
+            <Text style={styles.statNumber}>{user.followers}</Text>
+            <Text style={styles.statLabel}>Seguidores</Text>
+          </View>
+          <View style={styles.statItem}>
+            <Text style={styles.statNumber}>{user.following}</Text>
+            <Text style={styles.statLabel}>Siguiendo</Text>
+          </View>
+        </View> */}
       </View>
-    </LinearGradient>
+
+      {/* Información del usuario */}
+      <View style={styles.infoContainer}>
+        <Text style={styles.name}>{user.name}</Text>
+        <Text style={styles.username}>{user.username}</Text>
+        
+        <Text style={styles.bio}>{user.bio}</Text>
+        
+        <View style={styles.detailRow}>
+          <Text style={styles.detailText}>🌐 {user.website}</Text>
+        </View>
+        <View style={styles.detailRow}>
+          <Text style={styles.detailText}>📅 {user.joinedDate}</Text>
+        </View>
+      </View>
+
+      {/* Botones de acción */}
+      <View style={styles.actionsContainer}>
+        <TouchableOpacity style={styles.editButton}>
+          <Text style={styles.editButtonText}>Editar perfil</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.shareButton}>
+          <Text style={styles.shareButtonText}>Compartir</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Pestañas de contenido */}
+      <View style={styles.tabsContainer}>
+        <TouchableOpacity style={[styles.tab, styles.activeTab]}>
+          <Text style={styles.tabText}>Publicaciones</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.tab}>
+          <Text style={styles.tabText}>Guardado</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.tab}>
+          <Text style={styles.tabText}>Etiquetado</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Contenido del perfil */}
+      <View style={styles.contentPlaceholder}>
+        <Text style={styles.placeholderText}>Contenido del perfil</Text>
+      </View>
+    </ScrollView>
   );
 };
 
+// Estilos mejorados
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    backgroundColor: '#fff',
   },
-  content: {
-    padding: 20,
-    alignItems: 'center',
-    width: '100%',
+  contentContainer: {
+    paddingBottom: 50,
   },
-  logo: {
-    width: 100,
-    height: 100,
-    marginBottom: 30,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: 'white',
-    marginBottom: 30,
-  },
-  welcomeText: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: 'white',
-    marginBottom: 40,
-    textAlign: 'center',
-  },
-  button: {
-    width: '80%',
-    paddingVertical: 15,
-    borderRadius: 30,
+  header: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 15,
+    paddingHorizontal: width * 0.05,
+    paddingTop: height * 0.03,
+    paddingBottom: height * 0.02,
+  },
+  avatarContainer: {
+    position: 'relative',
+    marginTop: height * 0.02, // Agregar margen superior
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    paddingLeft: width * 0.05,
+    paddingRight: width * 0.05,
+    shadowOffset: {
+      width: 10,
+      height: 2,
+    },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
   },
-  mainButton: {
-    backgroundColor: 'white',
+  avatar: {
+    borderWidth: 3,
+    borderColor: '#fff',
   },
-  googleButton: {
-    backgroundColor: '#DB4437',
-  },
-  emailButton: {
-    backgroundColor: 'white',
+  editAvatarButton: {
+    position: 'absolute',
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+    alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#FF7E5F',
+    borderColor: '#ddd',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.2,
+        shadowRadius: 2,
+      },
+      android: {
+        elevation: 3,
+      },
+    }),
   },
-  buttonText: {
-    fontSize: 16,
-    fontWeight: '600',
+  editAvatarButtonText: {
+    fontSize: width * 0.04,
   },
-  divider: {
+  statsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    flex: 1,
+    marginLeft: width * 0.05,
+  },
+  statItem: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: width * 0.02,
+  },
+  statNumber: {
+    fontWeight: 'bold',
+    fontSize: width * 0.045,
+    marginBottom: height * 0.005,
+  },
+  statLabel: {
+    fontSize: width * 0.032,
+    color: '#666',
+  },
+  infoContainer: {
+    paddingHorizontal: width * 0.05,
+    marginBottom: height * 0.02,
+  },
+  name: {
+    fontWeight: 'bold',
+    fontSize: width * 0.055,
+    marginBottom: height * 0.005,
+  },
+  username: {
+    fontSize: width * 0.04,
+    color: '#666',
+    marginBottom: height * 0.015,
+  },
+  bio: {
+    fontSize: width * 0.038,
+    lineHeight: height * 0.025,
+    marginBottom: height * 0.015,
+  },
+  detailRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 20,
-    width: '80%',
+    marginBottom: height * 0.008,
   },
-  dividerLine: {
+  detailText: {
+    fontSize: width * 0.038,
+    color: '#333',
+  },
+  actionsContainer: {
+    flexDirection: 'row',
+    paddingHorizontal: width * 0.05,
+    marginBottom: height * 0.025,
+  },
+  editButton: {
+    flex: 3,
+    backgroundColor: '#f0f0f0',
+    paddingVertical: height * 0.015,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginRight: width * 0.03,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.1,
+        shadowRadius: 1,
+      },
+      android: {
+        elevation: 2,
+      },
+    }),
+  },
+  editButtonText: {
+    fontWeight: '600',
+    fontSize: width * 0.038,
+  },
+  shareButton: {
     flex: 1,
-    height: 1,
-    backgroundColor: 'white',
-    opacity: 0.5,
+    backgroundColor: '#f0f0f0',
+    paddingVertical: height * 0.015,
+    borderRadius: 8,
+    alignItems: 'center',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.1,
+        shadowRadius: 1,
+      },
+      android: {
+        elevation: 2,
+      },
+    }),
   },
-  dividerText: {
-    color: 'white',
-    marginHorizontal: 10,
-    fontSize: 14,
+  shareButtonText: {
+    fontWeight: '600',
+    fontSize: width * 0.038,
   },
-  registerLink: {
-    marginTop: 20,
+  tabsContainer: {
+    flexDirection: 'row',
+    borderTopWidth: 1,
+    borderTopColor: '#eee',
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
   },
-  registerText: {
-    color: 'white',
+  tab: {
+    flex: 1,
+    alignItems: 'center',
+    paddingVertical: height * 0.015,
   },
-  registerBold: {
-    fontWeight: 'bold',
-    textDecorationLine: 'underline',
+  activeTab: {
+    borderBottomWidth: 2,
+    borderBottomColor: '#000',
+  },
+  tabText: {
+    fontWeight: '600',
+    fontSize: width * 0.038,
+  },
+  contentPlaceholder: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: height * 0.1,
+  },
+  placeholderText: {
+    fontSize: width * 0.04,
+    color: '#999',
   },
 });
 
