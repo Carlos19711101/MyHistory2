@@ -8,7 +8,7 @@ const General = ({ navigation }: any) => {
 
   return (
     <LinearGradient
-      colors={['#88D3CE', '#6E45E2']} // Degradado naranja a amarillo
+      colors={['#4CE812', '#9DED9E']} // Degradado naranja a amarillo
       style={styles.container}
     >
       <View style={styles.content}>
@@ -30,7 +30,7 @@ const General = ({ navigation }: any) => {
           </>
         ) : (
           <>
-            <Text style={styles.title}>Inicia Sesión</Text>
+            <Text style={styles.title}>este es General</Text>
             
             <TouchableOpacity 
               style={[styles.button, styles.googleButton]}
@@ -41,11 +41,20 @@ const General = ({ navigation }: any) => {
             </TouchableOpacity>
             
             <TouchableOpacity 
-              style={[styles.button, styles.googleButton]}
-              onPress={() => console.log('Google login')}
-            >
-              <AntDesign name="google" size={20} color="white" />
-              <Text style={[styles.buttonText, { marginLeft: 10 }]}>Continuar con Google</Text>
+                            // boton para pasar a la pantalla de GeneralScreen
+                  style={styles.button}
+                  onPress={() => navigation.navigate('Daily')}
+                  activeOpacity={0.7} // Feedback táctil suave
+                              >
+               <Text style={styles.buttonText}>Voy para Daily</Text>
+            </TouchableOpacity>
+            <TouchableOpacity 
+                            // boton para pasar a la pantalla de GeneralScreen
+                  style={styles.button}
+                  onPress={() => navigation.navigate('AuthScreen')}
+                  activeOpacity={0.7} // Feedback táctil suave
+                              >
+               <Text style={styles.buttonText}>Voy para AuthScreen</Text>
             </TouchableOpacity>
 
             <View style={styles.divider}>

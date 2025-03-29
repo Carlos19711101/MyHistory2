@@ -30,7 +30,7 @@ const DailyScreen = ({ navigation }: any) => {
           </>
         ) : (
           <>
-            <Text style={styles.title}>Inicia Sesión</Text>
+            <Text style={styles.title}>Estoy Daily</Text>
             
             <TouchableOpacity 
               style={[styles.button, styles.googleButton]}
@@ -39,13 +39,13 @@ const DailyScreen = ({ navigation }: any) => {
               <AntDesign name="google" size={20} color="white" />
               <Text style={[styles.buttonText, { marginLeft: 10 }]}>Continuar con Google</Text>
             </TouchableOpacity>
-            
             <TouchableOpacity 
-              style={[styles.button, styles.googleButton]}
-              onPress={() => console.log('Google login')}
-            >
-              <AntDesign name="google" size={20} color="white" />
-              <Text style={[styles.buttonText, { marginLeft: 10 }]}>Continuar con Google</Text>
+                                        // boton para pasar a la pantalla de GeneralScreen
+                 style={styles.button}
+                 onPress={() => navigation.navigate('AuthScreen')}
+                  activeOpacity={0.7} // Feedback táctil suave
+                                          >
+                   <Text style={styles.buttonText}>Voy para AuthScreen</Text>
             </TouchableOpacity>
 
             <View style={styles.divider}>

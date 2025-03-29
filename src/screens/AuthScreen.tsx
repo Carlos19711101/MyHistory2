@@ -31,13 +31,14 @@ const AuthScreen = ({ navigation }: any) => {
         ) : (
           <>
             <Text style={styles.title}>Inicia Sesión</Text>
-            
+                     
             <TouchableOpacity 
-              style={[styles.button, styles.googleButton]}
-              onPress={() => console.log('Google login')}
-            >
-              <AntDesign name="google" size={20} color="white" />
-              <Text style={[styles.buttonText, { marginLeft: 10 }]}>Continuar con Google</Text>
+                 // boton para pasar a la pantalla de GeneralScreen
+                      style={styles.button}
+                      onPress={() => navigation.navigate('General')}
+                      activeOpacity={0.7} // Feedback táctil suave
+                    >
+                      <Text style={styles.buttonText}>Voy para General</Text>
             </TouchableOpacity>
             
             <TouchableOpacity 
@@ -47,6 +48,7 @@ const AuthScreen = ({ navigation }: any) => {
               <AntDesign name="google" size={20} color="white" />
               <Text style={[styles.buttonText, { marginLeft: 10 }]}>Continuar con Google</Text>
             </TouchableOpacity>
+            
 
             <View style={styles.divider}>
               <View style={styles.dividerLine} />
