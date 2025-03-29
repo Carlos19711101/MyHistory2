@@ -8,7 +8,7 @@ const DailyScreen = ({ navigation }: any) => {
 
   return (
     <LinearGradient
-      colors={['#88D3CE', '#6E45E2']} // Degradado naranja a amarillo
+      colors={['#4c669f', '#242afb', '#090ffa']} // Degradado naranja a amarillo
       style={styles.container}
     >
       <View style={styles.content}>
@@ -39,13 +39,13 @@ const DailyScreen = ({ navigation }: any) => {
               <AntDesign name="google" size={20} color="white" />
               <Text style={[styles.buttonText, { marginLeft: 10 }]}>Continuar con Google</Text>
             </TouchableOpacity>
-            <TouchableOpacity 
-                                        // boton para pasar a la pantalla de GeneralScreen
-                 style={styles.button}
-                 onPress={() => navigation.navigate('AuthScreen')}
-                  activeOpacity={0.7} // Feedback táctil suave
+              
+            <TouchableOpacity  
+              style={[styles.button, styles.googleButton2]}
+              onPress={() => navigation.navigate('AuthScreen')}
+                  // activeOpacity={0.7} // Feedback táctil suave
                                           >
-                   <Text style={styles.buttonText}>Voy para AuthScreen</Text>
+              <Text style={[styles.buttonText, { marginLeft: 10 }]}>Voy para AuthScreen</Text>
             </TouchableOpacity>
 
             <View style={styles.divider}>
@@ -121,6 +121,9 @@ const styles = StyleSheet.create({
   },
   googleButton: {
     backgroundColor: '#DB4437',
+  },
+  googleButton2: {
+    backgroundColor: '#9798AA',
   },
   emailButton: {
     backgroundColor: 'white',
