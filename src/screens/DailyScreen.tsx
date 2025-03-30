@@ -56,16 +56,9 @@ const DailyScreen = ({ navigation }: any) => {
 
             <TouchableOpacity 
               style={[styles.button, styles.emailButton]}
-              onPress={() => navigation.navigate('Login')}
+              onPress={() => navigation.navigate('General')}
             >
-              <Text style={[styles.buttonText, { color: '#FF7E5F' }]}>Usar correo electrónico</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity 
-              style={styles.registerLink}
-              onPress={() => navigation.navigate('Register')}
-            >
-              <Text style={styles.registerText}>¿No tienes cuenta? <Text style={styles.registerBold}>Regístrate</Text></Text>
+              <Text style={[styles.buttonText, { color: '#FF7E5F' }]}>volver a General</Text>
             </TouchableOpacity>
           </>
         )}

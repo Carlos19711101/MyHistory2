@@ -12,7 +12,7 @@ import {
 
 const { width, height } = Dimensions.get('window');
 
-const ProfileScreen = () => {
+const ProfileScreen = ({ navigation }: any)  => {
   // Datos de ejemplo del usuario
   const user = {
     name: 'María González',
@@ -103,8 +103,11 @@ const ProfileScreen = () => {
         <TouchableOpacity style={styles.editButton}>
           <Text style={styles.editButtonText}>Editar perfil</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.shareButton}>
-          <Text style={styles.shareButtonText}>Compartir</Text>
+        <TouchableOpacity style={styles.shareButton}
+        onPress={() => navigation.navigate('General')}
+        >
+          
+          <Text style={styles.shareButtonText}>General</Text>
         </TouchableOpacity>
       </View>
 

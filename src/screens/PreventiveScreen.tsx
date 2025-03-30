@@ -8,7 +8,7 @@ const Preventive = ({ navigation }: any) => {
 
   return (
     <LinearGradient
-      colors={['#88D3CE', '#6E45E2']} // Degradado naranja a amarillo
+      colors={['#88D3CE', '#6E45E2', '#090FFA']} // Degradado 
       style={styles.container}
     >
       <View style={styles.content}>
@@ -30,15 +30,7 @@ const Preventive = ({ navigation }: any) => {
           </>
         ) : (
           <>
-            <Text style={styles.title}>Inicia Sesión</Text>
-            
-            <TouchableOpacity 
-              style={[styles.button, styles.googleButton]}
-              onPress={() => console.log('Google login')}
-            >
-              <AntDesign name="google" size={20} color="white" />
-              <Text style={[styles.buttonText, { marginLeft: 10 }]}>Continuar con Google</Text>
-            </TouchableOpacity>
+            <Text style={styles.title}>Estoy en preventive</Text>
             
             <TouchableOpacity 
               style={[styles.button, styles.googleButton]}
@@ -56,16 +48,9 @@ const Preventive = ({ navigation }: any) => {
 
             <TouchableOpacity 
               style={[styles.button, styles.emailButton]}
-              onPress={() => navigation.navigate('Login')}
+              onPress={() => navigation.navigate('General')}
             >
-              <Text style={[styles.buttonText, { color: '#FF7E5F' }]}>Usar correo electrónico</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity 
-              style={styles.registerLink}
-              onPress={() => navigation.navigate('Register')}
-            >
-              <Text style={styles.registerText}>¿No tienes cuenta? <Text style={styles.registerBold}>Regístrate</Text></Text>
+              <Text style={[styles.buttonText, { color: '#FF7E5F' }]}>Volver a General</Text>
             </TouchableOpacity>
           </>
         )}

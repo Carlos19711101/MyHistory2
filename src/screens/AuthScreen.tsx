@@ -35,10 +35,10 @@ const AuthScreen = ({ navigation }: any) => {
             <TouchableOpacity 
                  // boton para pasar a la pantalla de GeneralScreen
                       style={[styles.button, styles.googleButton]}
-                      onPress={() => navigation.navigate('Profile')}
+                      onPress={() => navigation.navigate('General')}
                       activeOpacity={0.7} // Feedback táctil suave
                     >
-                      <Text style={styles.buttonText}>Voy para Profile</Text>
+                      <Text style={styles.buttonText}>Voy para General</Text>
             </TouchableOpacity>
             
             <TouchableOpacity 

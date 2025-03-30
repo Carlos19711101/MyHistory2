@@ -30,16 +30,8 @@ const EmergencyScreen = ({ navigation }: any) => {
           </>
         ) : (
           <>
-            <Text style={styles.title}>Inicia Sesión</Text>
-            
-            <TouchableOpacity 
-              style={[styles.button, styles.googleButton]}
-              onPress={() => console.log('Google login')}
-            >
-              <AntDesign name="google" size={20} color="white" />
-              <Text style={[styles.buttonText, { marginLeft: 10 }]}>Continuar con Google</Text>
-            </TouchableOpacity>
-            
+            <Text style={styles.title}>Emergency</Text>
+             
             <TouchableOpacity 
               style={[styles.button, styles.googleButton]}
               onPress={() => console.log('Google login')}
@@ -56,16 +48,9 @@ const EmergencyScreen = ({ navigation }: any) => {
 
             <TouchableOpacity 
               style={[styles.button, styles.emailButton]}
-              onPress={() => navigation.navigate('Login')}
+              onPress={() => navigation.navigate('General')}
             >
-              <Text style={[styles.buttonText, { color: '#FF7E5F' }]}>Usar correo electrónico</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity 
-              style={styles.registerLink}
-              onPress={() => navigation.navigate('Register')}
-            >
-              <Text style={styles.registerText}>¿No tienes cuenta? <Text style={styles.registerBold}>Regístrate</Text></Text>
+              <Text style={[styles.buttonText, { color: '#FF7E5F' }]}>General</Text>
             </TouchableOpacity>
           </>
         )}
