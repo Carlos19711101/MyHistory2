@@ -98,9 +98,9 @@ const MainSlideshow: React.FC = () => {
   };
 
   return (
-     <LinearGradient
+    <LinearGradient
           colors={['#88D3CE', '#6E45E2', '#090FFA']}
-          style={styles.container}
+          style={styles.containerGlobal}
         >
       <View style={styles.container}>
         <ScrollView
@@ -177,9 +177,12 @@ const MainSlideshow: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
+  containerGlobal: {
+    flex: 1,
+  },
   container: {
-    height: 320,
-    marginVertical: 20,
+    height: 420,
+    marginVertical: 80,
     overflow: 'hidden',
   },
   scrollContainer: {
