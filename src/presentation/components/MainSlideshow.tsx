@@ -10,6 +10,7 @@ import {
   NativeScrollEvent,
   Platform,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const { width } = Dimensions.get('window');
 const CARD_WIDTH = width * 0.6; // 60% para tarjeta central
@@ -97,76 +98,81 @@ const MainSlideshow: React.FC = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <ScrollView
-        ref={scrollViewRef}
-        horizontal
-        pagingEnabled
-        decelerationRate={Platform.OS === 'ios' ? 0.99 : 0.95}
-        showsHorizontalScrollIndicator={false}
-        snapToInterval={CARD_WIDTH + SPACING * 2}
-        contentContainerStyle={styles.scrollContainer}
-        onScroll={handleScroll}
-        onMomentumScrollEnd={handleMomentumScrollEnd}
-        scrollEventThrottle={16}
-        directionalLockEnabled={true}
-        alwaysBounceHorizontal={false}
-        bounces={false}
-        overScrollMode="never"
-      >
-        {cards.map((card, index) => {
-          const inputRange = [
-            (index - 1) * (CARD_WIDTH + SPACING * 2),
-            index * (CARD_WIDTH + SPACING * 2),
-            (index + 1) * (CARD_WIDTH + SPACING * 2),
-          ];
+     <LinearGradient
+          colors={['#88D3CE', '#6E45E2', '#090FFA']}
+          style={styles.container}
+        >
+      <View style={styles.container}>
+        <ScrollView
+          ref={scrollViewRef}
+          horizontal
+          pagingEnabled
+          decelerationRate={Platform.OS === 'ios' ? 0.99 : 0.95}
+          showsHorizontalScrollIndicator={false}
+          snapToInterval={CARD_WIDTH + SPACING * 2}
+          contentContainerStyle={styles.scrollContainer}
+          onScroll={handleScroll}
+          onMomentumScrollEnd={handleMomentumScrollEnd}
+          scrollEventThrottle={16}
+          directionalLockEnabled={true}
+          alwaysBounceHorizontal={false}
+          bounces={false}
+          overScrollMode="never"
+        >
+          {cards.map((card, index) => {
+            const inputRange = [
+              (index - 1) * (CARD_WIDTH + SPACING * 2),
+              index * (CARD_WIDTH + SPACING * 2),
+              (index + 1) * (CARD_WIDTH + SPACING * 2),
+            ];
 
-          const scale = scrollX.interpolate({
-            inputRange,
-            outputRange: [0.8, 0.9, 0.8],
-            extrapolate: 'clamp',
-          });
+            const scale = scrollX.interpolate({
+              inputRange,
+              outputRange: [0.8, 0.9, 0.8],
+              extrapolate: 'clamp',
+            });
 
-          const opacity = scrollX.interpolate({
-            inputRange,
-            outputRange: [0.5, 1, 0.5],
-            extrapolate: 'clamp',
-          });
+            const opacity = scrollX.interpolate({
+              inputRange,
+              outputRange: [0.5, 1, 0.5],
+              extrapolate: 'clamp',
+            });
 
-          return (
-            <Animated.View
-              key={card.id}
+            return (
+              <Animated.View
+                key={card.id}
+                style={[
+                  styles.card,
+                  {
+                    width: CARD_WIDTH,
+                    backgroundColor: card.color,
+                    transform: [{ scale }],
+                    opacity,
+                    marginLeft: index === 0 ? MARGIN_HORIZONTAL : SPACING,
+                    marginRight: index === cards.length - 1 ? MARGIN_HORIZONTAL : SPACING,
+                  },
+                ]}
+              >
+                <Text style={styles.cardText}>{card.text}</Text>
+              </Animated.View>
+            );
+          })}
+        </ScrollView>
+        
+        {/* Indicadores de posición */}
+        <View style={styles.pagination}>
+          {originalCards.map((_, index) => (
+            <View
+              key={index}
               style={[
-                styles.card,
-                {
-                  width: CARD_WIDTH,
-                  backgroundColor: card.color,
-                  transform: [{ scale }],
-                  opacity,
-                  marginLeft: index === 0 ? MARGIN_HORIZONTAL : SPACING,
-                  marginRight: index === cards.length - 1 ? MARGIN_HORIZONTAL : SPACING,
-                },
+                styles.paginationDot,
+                currentIndex === index && styles.paginationDotActive,
               ]}
-            >
-              <Text style={styles.cardText}>{card.text}</Text>
-            </Animated.View>
-          );
-        })}
-      </ScrollView>
-      
-      {/* Indicadores de posición */}
-      <View style={styles.pagination}>
-        {originalCards.map((_, index) => (
-          <View
-            key={index}
-            style={[
-              styles.paginationDot,
-              currentIndex === index && styles.paginationDotActive,
-            ]}
-          />
-        ))}
+            />
+          ))}
+        </View>
       </View>
-    </View>
+    </LinearGradient>
   );
 };
 
