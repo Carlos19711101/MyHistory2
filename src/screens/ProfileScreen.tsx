@@ -15,13 +15,13 @@ const { width, height } = Dimensions.get('window');
 const ProfileScreen = ({ navigation }: any)  => {
   // Datos de ejemplo del usuario
   const user = {
-    name: 'María González',
+    name: 'Kawasaki Ninja',
     username: '@mariagonz',
     bio: 'Desarrolladora móvil | Amante del café | Viajera frecuente',
     followers: 1243,
     following: 567,
     posts: 86,
-    avatar: 'https://randomuser.me/api/portraits/women/44.jpg',
+    avatar: require('../../assets/imagen/perfil_Moto.png'), // Cambia esto por la URL de tu imagen
     website: 'mariagonzalez.dev',
     joinedDate: 'Junio 2020',
   };
@@ -40,7 +40,7 @@ const ProfileScreen = ({ navigation }: any)  => {
       <View style={styles.header}>
         <View style={styles.avatarContainer}>
           <Image 
-            source={{ uri: user.avatar }} 
+            source={user.avatar} 
             style={[
               styles.avatar, 
               { 
