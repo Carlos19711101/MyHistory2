@@ -12,6 +12,7 @@ const AuthScreen = ({ navigation }: any) => {
       style={styles.container}
     >
       <View style={styles.content}>
+        
         <Image 
           // source={require('./assets/auth-icon.png')} // Reemplaza con tu imagen
           source={{ uri: 'https://via.placeholder.com/100' }} 
@@ -30,8 +31,13 @@ const AuthScreen = ({ navigation }: any) => {
           </>
         ) : (
           <>
-            <Text style={styles.title}>Inicia Sesión</Text>
-                     
+            <Text style={styles.title}>¡Bienvenido!</Text>
+            <View style={styles.divider}>
+              <View style={styles.dividerLine} />
+              <Text style={styles.dividerText}>o</Text>
+              <View style={styles.dividerLine} />
+            </View>
+            <Text style={styles.title2}>Inicia Sesión</Text>
             <TouchableOpacity 
                  // boton para pasar a la pantalla de GeneralScreen
                       style={[styles.button, styles.googleButton]}
@@ -56,26 +62,28 @@ const AuthScreen = ({ navigation }: any) => {
               <AntDesign name="google" size={20} color="white" />
               <Text style={[styles.buttonText, { marginLeft: 10 }]}>Continuar con Google</Text>
             </TouchableOpacity>
+            <Text style={styles.registerText}>¿No tienes cuenta? </Text>
+            <Text style={styles.subtitle}>Te puedes registra o continuar con Google</Text>
             
 
-            <View style={styles.divider}>
+            {/* <View style={styles.divider}>
               <View style={styles.dividerLine} />
               <Text style={styles.dividerText}>o</Text>
               <View style={styles.dividerLine} />
-            </View>
+            </View> */}
 
-            <TouchableOpacity 
+            {/* <TouchableOpacity 
               style={[styles.button, styles.emailButton]}
               onPress={() => navigation.navigate('Login')}
             >
               <Text style={[styles.buttonText, { color: '#FF7E5F' }]}>Usar correo electrónico</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
             <TouchableOpacity 
               style={styles.registerLink}
               onPress={() => navigation.navigate('Register')}
             >
-              <Text style={styles.registerText}>¿No tienes cuenta? <Text style={styles.registerBold}>Regístrate</Text></Text>
+
             </TouchableOpacity>
           </>
         )}
@@ -100,10 +108,23 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   title: {
-    fontSize: 24,
+    fontSize: 30,
     fontWeight: 'bold',
     color: 'white',
     marginBottom: 30,
+  },
+  title2: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'white',
+    marginBottom: 30,
+  },
+  subtitle: {
+    fontSize: 18,
+    color: '#4c4e5b',
+    textAlign: 'center',
+    marginBottom: 40,
+    lineHeight: 24,
   },
   welcomeText: {
     fontSize: 22,
@@ -130,7 +151,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   googleButton: {
-    backgroundColor: '#DB4437',
+    backgroundColor: '#cacbd6',
   },
   emailButton: {
     backgroundColor: 'white',
@@ -166,7 +187,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   registerText: {
-    color: 'white',
+    color: '#4c4e5b',
   },
   registerBold: {
     fontWeight: 'bold',

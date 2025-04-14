@@ -19,7 +19,7 @@ const WelcomeScreen = ({ navigation }: any) => {
           onPress={() => navigation.navigate('AuthScreen')}
           activeOpacity={0.7} // Feedback táctil suave
         >
-          <Text style={styles.buttonText}>Comenzar Ahora</Text>
+          <Text style={styles.buttonText}>Comenzar </Text>
         </TouchableOpacity>
       </View>
     </LinearGradient>
@@ -54,14 +54,14 @@ const styles = StyleSheet.create({
     lineHeight: 24,
   },
   button: {
-    backgroundColor: 'white',
+    backgroundColor: '#cacbd6',
     paddingVertical: 15,
-    paddingHorizontal: 40,
+    paddingHorizontal: 60,
     borderRadius: 30,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 3,
+      height: 9,
     },
     shadowOpacity: 0.27,
     shadowRadius: 4.65,
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#6E45E2',
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: '500',
   },
 });
 
