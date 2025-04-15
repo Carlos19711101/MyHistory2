@@ -1,12 +1,13 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { AntDesign } from '@expo/vector-icons';
 
 const { width: screenWidth } = Dimensions.get('window');
 const cardWidth = screenWidth * 0.8;
 const cardMargin = screenWidth * 0.02;
 
-const GeneralScreen = ({ navigation }: any) => {
+const TodoScreen = ({ navigation }: any) => {
   // Array de imágenes de prueba (puedes reemplazar con tus URLs)
   const demoImages = [
     'https://cdn-icons-png.flaticon.com/512/3652/3652191.png', // Calendario
@@ -56,7 +57,14 @@ const GeneralScreen = ({ navigation }: any) => {
       colors={['#88D3CE', '#6E45E2', '#090FFA']}
       style={styles.container}
     >
+      <TouchableOpacity
+      style={styles.backButton}
+      onPress={() => navigation.navigate('AuthScreen')}
+    >
+      <AntDesign name="arrowleft" size={34} color="white" />
+    </TouchableOpacity>
       <View style={styles.innerContainer}>
+      <Text style={styles.title}></Text>
         <Text style={styles.title}>Opciones Principales</Text>
         
         <ScrollView
@@ -98,6 +106,13 @@ const styles = StyleSheet.create({
   innerContainer: {
     flex: 1,
     paddingTop: 20,
+  },
+  backButton: {
+    position: 'absolute',
+    top: 50,
+    right: 20,
+    zIndex: 10,
+    padding: 10,
   },
   title: {
     fontSize: 24,
@@ -154,4 +169,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default GeneralScreen;
+export default TodoScreen;

@@ -11,6 +11,13 @@ const DailyScreen = ({ navigation }: any) => {
       colors={['#4c669f', '#242afb', '#090ffa']} // Degradado naranja a amarillo
       style={styles.container}
     >
+    <TouchableOpacity
+      style={styles.backButton}
+      onPress={() => navigation.navigate('Todo')}
+    >
+      <AntDesign name="arrowleft" size={24} color="white" />
+    </TouchableOpacity>
+
       <View style={styles.content}>
         <Image 
           // source={require('./assets/auth-icon.png')} // Reemplaza con tu imagen
@@ -95,6 +102,17 @@ const styles = StyleSheet.create({
     marginBottom: 40,
     textAlign: 'center',
   },
+  backButton: {
+    position: 'absolute',
+    top: 50,
+    right: 20,
+    zIndex: 10,
+    padding: 10,
+  },
+  backButtonText: {
+    color: 'white',
+    fontSize: 16,
+  },  
   button: {
     width: '80%',
     paddingVertical: 15,

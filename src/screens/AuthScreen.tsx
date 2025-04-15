@@ -37,24 +37,25 @@ const AuthScreen = ({ navigation }: any) => {
               <Text style={styles.dividerText}>o</Text>
               <View style={styles.dividerLine} />
             </View>
-            <Text style={styles.title2}>Inicia Sesión</Text>
             <TouchableOpacity 
-                 // boton para pasar a la pantalla de GeneralScreen
+                 // boton para pasar a la pantalla de TodoScreen
                       style={[styles.button, styles.googleButton]}
-                      onPress={() => navigation.navigate('General')}
+                      onPress={() => navigation.navigate('Todo')}
                       activeOpacity={0.7} // Feedback táctil suave
                     >
-                      <Text style={styles.buttonText}>Voy para General</Text>
+                    <Text style={styles.buttonText}>Iniciar Sesión</Text>
             </TouchableOpacity>
+            <Text style={styles.registerText}>¿No tienes cuenta? </Text>
+            <Text style={styles.registerText}></Text>
             <TouchableOpacity 
-                 // boton para pasar a la pantalla de GeneralScreen
+                     // boton para pasar a la pantalla de GeneralScreen
                       style={[styles.button, styles.googleButton]}
                       onPress={() => navigation.navigate('General2')}
                       activeOpacity={0.7} // Feedback táctil suave
                     >
-                      <Text style={styles.buttonText}>Voy para General #2</Text>
+                      <Text style={styles.buttonText}>Registrate</Text>
             </TouchableOpacity>
-            
+            <Text style={styles.buttonText}></Text>
             <TouchableOpacity 
               style={[styles.button, styles.googleButton]}
               onPress={() => console.log('Google login')}
@@ -62,10 +63,7 @@ const AuthScreen = ({ navigation }: any) => {
               <AntDesign name="google" size={20} color="white" />
               <Text style={[styles.buttonText, { marginLeft: 10 }]}>Continuar con Google</Text>
             </TouchableOpacity>
-            <Text style={styles.registerText}>¿No tienes cuenta? </Text>
-            <Text style={styles.subtitle}>Te puedes registra o continuar con Google</Text>
-            
-
+           
             {/* <View style={styles.divider}>
               <View style={styles.dividerLine} />
               <Text style={styles.dividerText}>o</Text>
@@ -188,6 +186,7 @@ const styles = StyleSheet.create({
   },
   registerText: {
     color: '#4c4e5b',
+    
   },
   registerBold: {
     fontWeight: 'bold',

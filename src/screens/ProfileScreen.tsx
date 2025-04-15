@@ -9,6 +9,7 @@ import {
   Dimensions,
   Platform 
 } from 'react-native';
+import { AntDesign } from '@expo/vector-icons'; 
 
 const { width, height } = Dimensions.get('window');
 
@@ -36,6 +37,12 @@ const ProfileScreen = ({ navigation }: any)  => {
       contentContainerStyle={styles.contentContainer}
       showsVerticalScrollIndicator={false}
     >
+    <TouchableOpacity
+      style={styles.backButton}
+      onPress={() => navigation.navigate('Todo')}
+    >
+      <AntDesign name="arrowleft" size={34} color="black" />
+    </TouchableOpacity>
       {/* Encabezado del perfil */}
       <View style={styles.header}>
         <View style={styles.avatarContainer}>
@@ -166,6 +173,13 @@ const styles = StyleSheet.create({
   avatar: {
     borderWidth: 3,
     borderColor: '#fff',
+  },
+  backButton: {
+    position: 'absolute',
+    top: 50,
+    right: 10,
+    zIndex: 10,
+    padding: 10,
   },
   editAvatarButton: {
     position: 'absolute',

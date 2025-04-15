@@ -11,6 +11,12 @@ const Preventive = ({ navigation }: any) => {
       colors={['#88D3CE', '#6E45E2', '#090FFA']} // Degradado 
       style={styles.container}
     >
+      <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.navigate('Todo')}
+      >
+            <AntDesign name="arrowleft" size={24} color="white" />
+      </TouchableOpacity>
       <View style={styles.content}>
         <Image 
           // source={require('./assets/auth-icon.png')} // Reemplaza con tu imagen
@@ -86,6 +92,13 @@ const styles = StyleSheet.create({
     color: 'white',
     marginBottom: 40,
     textAlign: 'center',
+  },
+  backButton: {
+    position: 'absolute',
+    top: 50,
+    right: 20,
+    zIndex: 10,
+    padding: 10,
   },
   button: {
     width: '80%',
