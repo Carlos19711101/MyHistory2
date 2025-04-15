@@ -1,16 +1,39 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image, BackHandler, Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { AntDesign } from '@expo/vector-icons'; // Requiere instalar @expo/vector-icons
 
 const AuthScreen = ({ navigation }: any) => {
   const [isLogged, setIsLogged] = React.useState(false);
 
+  const exitApp = () => {
+        Alert.alert(
+          'Salir',
+          '¿Estás seguro de que quieres salir de la aplicación?',
+          [
+            {
+              text: 'Cancelar',
+              style: 'cancel',
+            },
+            {
+              text: 'Salir',
+              onPress: () => BackHandler.exitApp(),
+            },
+          ],
+          { cancelable: false }
+        );
+     };
   return (
     <LinearGradient
       colors={['#090ffa', '#6E45E2', '#88D3CE']} // Degradado de colores
       style={styles.container}
     >
+      <TouchableOpacity 
+      style={styles.exitButton}
+      onPress={exitApp}
+      >
+      <AntDesign name="logout" size={24} color="white" />
+      </TouchableOpacity>
       <View style={styles.content}>
         
         <Image 
@@ -181,6 +204,14 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     fontSize: 14,
   },
+  exitButton: {
+    position: 'absolute',
+    top: 50,
+    left: 20,
+    zIndex: 10,
+    margin: 10,
+    padding: 10,
+  },
   registerLink: {
     marginTop: 20,
   },
@@ -192,6 +223,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textDecorationLine: 'underline',
   },
+  
 });
 
 export default AuthScreen;

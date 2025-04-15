@@ -41,7 +41,8 @@ const ProfileScreen = ({ navigation }: any)  => {
       style={styles.backButton}
       onPress={() => navigation.navigate('Todo')}
     >
-      <AntDesign name="arrowleft" size={34} color="black" />
+      {/* icono usado para devolver a todoScreen */}
+      <AntDesign name="doubleleft" size={34} color="black" />
     </TouchableOpacity>
       {/* Encabezado del perfil */}
       <View style={styles.header}>

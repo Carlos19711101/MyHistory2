@@ -1,6 +1,7 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import React from 'react'
+import { AntDesign } from '@expo/vector-icons';
 
 const RouteScreen = ({ navigation }: any) => {
   return (
@@ -8,6 +9,13 @@ const RouteScreen = ({ navigation }: any) => {
           colors={['#88D3CE', '#6E45E2', '#090FFA']} // Degradado 
           style={styles.container}
         >
+          <TouchableOpacity
+      style={styles.backButton}
+      onPress={() => navigation.navigate('Todo')}
+    >
+      {/* icono usado para devolver a todoScreen */}
+      <AntDesign name="doubleleft" size={24} color="white" />
+    </TouchableOpacity>
         <View style={styles.content}></View>
 
     </LinearGradient>
@@ -43,6 +51,13 @@ const styles = StyleSheet.create({
     color: 'white',
     marginBottom: 40,
     textAlign: 'center',
+  },
+  backButton: {
+    position: 'absolute',
+    top: 50,
+    right: 20,
+    zIndex: 10,
+    padding: 10,
   },
   button: {
     width: '80%',

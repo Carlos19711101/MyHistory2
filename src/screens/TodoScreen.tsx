@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions, Image } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions, Image, BackHandler, Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { AntDesign } from '@expo/vector-icons';
 
@@ -13,7 +13,8 @@ const TodoScreen = ({ navigation }: any) => {
     'https://cdn-icons-png.flaticon.com/512/3652/3652191.png', // Calendario
     'https://cdn-icons-png.flaticon.com/512/159/159469.png',   // Herramientas
     'https://cdn-icons-png.flaticon.com/512/2781/2781395.png', // Emergencia
-    'https://cdn-icons-png.flaticon.com/512/1144/1144760.png'  // Perfil
+    'https://cdn-icons-png.flaticon.com/512/1144/1144760.png', // Perfil
+    'https://cdn-icons-png.flaticon.com/512/447/447031.png' // Ruta
   ];
 
   // Datos de las tarjetas con imágenes
@@ -50,7 +51,33 @@ const TodoScreen = ({ navigation }: any) => {
       screenName: 'Profile',
       image: demoImages[3]
     },
+    { 
+      id: 5, 
+      title: 'Route', 
+      subtitle: 'Perfil de usuario',
+      color: '#9C27B0', // Morado
+      screenName: 'Route',
+      image: demoImages[4]
+    },
   ];
+  const exitApp = () => {
+      Alert.alert(
+        'Salir',
+        '¿Estás seguro de que quieres salir de la aplicación?',
+        [
+          {
+            text: 'Cancelar',
+            style: 'cancel',
+          },
+          {
+            text: 'Salir',
+            onPress: () => BackHandler.exitApp(),
+          },
+        ],
+        { cancelable: false }
+      );
+   };
+
 
   return (
     <LinearGradient
@@ -61,7 +88,13 @@ const TodoScreen = ({ navigation }: any) => {
       style={styles.backButton}
       onPress={() => navigation.navigate('AuthScreen')}
     >
-      <AntDesign name="arrowleft" size={34} color="white" />
+      <AntDesign name="doubleleft" size={34} color="white" />
+    </TouchableOpacity>
+      <TouchableOpacity
+      style={styles.exitButton}
+      onPress={exitApp}
+    >
+      <AntDesign name="logout" size={24} color="white" />
     </TouchableOpacity>
       <View style={styles.innerContainer}>
       <Text style={styles.title}></Text>
@@ -166,6 +199,16 @@ const styles = StyleSheet.create({
     textShadowColor: 'rgba(0, 0, 0, 0.5)',
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 2,
+  },
+  exitButton: {
+    position: 'absolute',
+    top: 50,
+    left: 20,
+    zIndex: 10,
+    padding: 10,
+    margin: 10,
+  },
+  exitButtonText: {
   },
 });
 

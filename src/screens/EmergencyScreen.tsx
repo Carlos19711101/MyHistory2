@@ -15,7 +15,8 @@ const EmergencyScreen = ({ navigation }: any) => {
             style={styles.backButton}
             onPress={() => navigation.navigate('Todo')}
       >
-            <AntDesign name="arrowleft" size={24} color="white" />
+        {/* icono usado para devolver a todoScreen */}
+            <AntDesign name="doubleleft" size={24} color="white" />
       </TouchableOpacity>
       <View style={styles.content}>
         <Image 
