@@ -92,7 +92,7 @@ const DailyScreen = ({ navigation }: any) => {
 
   return (
     <LinearGradient
-      colors={['#4c669f', '#242afb', '#090ffa']}
+      colors={['#4c669f', '#242afb', '#58fd03']}
       style={styles.container}
     >
       <TouchableOpacity
@@ -131,7 +131,7 @@ const DailyScreen = ({ navigation }: any) => {
             style={styles.input}
             value={newEntry}
             onChangeText={setNewEntry}
-            placeholder="Escribe tu entrada de diario..."
+            placeholder="Escribe tu comentario aquí..."
             placeholderTextColor="#aaa"
             multiline
           />

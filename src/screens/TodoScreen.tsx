@@ -21,6 +21,14 @@ const TodoScreen = ({ navigation }: any) => {
   const cards = [
     { 
       id: 1, 
+      title: 'Profile', 
+      subtitle: 'Perfil de usuario',
+      color: '#9C27B0', // Morado
+      screenName: 'Profile',
+      image: demoImages[3]
+    },
+    { 
+      id: 2, 
       title: 'Daily', 
       subtitle: 'Actividades diarias',
       color: '#4CAF50', // Verde
@@ -28,7 +36,7 @@ const TodoScreen = ({ navigation }: any) => {
       image: demoImages[0]
     },
     { 
-      id: 2, 
+      id: 3, 
       title: 'Preventive', 
       subtitle: 'Mantenimiento preventivo',
       color: '#2196F3', // Azul
@@ -36,20 +44,12 @@ const TodoScreen = ({ navigation }: any) => {
       image: demoImages[1]
     },
     { 
-      id: 3, 
+      id: 4, 
       title: 'Emergency', 
       subtitle: 'Casos de emergencia',
       color: '#FF5252', // Rojo
       screenName: 'Emergency',
       image: demoImages[2]
-    },
-    { 
-      id: 4, 
-      title: 'Profile', 
-      subtitle: 'Perfil de usuario',
-      color: '#9C27B0', // Morado
-      screenName: 'Profile',
-      image: demoImages[3]
     },
     { 
       id: 5, 

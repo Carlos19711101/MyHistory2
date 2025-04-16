@@ -7,7 +7,7 @@ import DailyScreen from './src/screens/DailyScreen';
 import PreventiveScreen from './src/screens/PreventiveScreen';
 import EmergencyScreen from './src/screens/EmergencyScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
-import General2Screen from './src/screens/General2Screen';
+import General2Screen from './src/screens/GeneralScreen';
 import MainSlideshow from './src/presentation/components/MainSlideshow';
 import TodoScreen from './src/screens/TodoScreen';
 import RouteScreen from './src/screens/RouteScreen';
@@ -17,7 +17,7 @@ type RootStackParamList = {
   AuthScreen: undefined;
   Daily: undefined;
   Todo: undefined;
-  General2: undefined;
+  General: undefined;
   Preventive: undefined;
   Emergency: undefined;
   Profile: undefined; 
@@ -30,7 +30,7 @@ export type WelcomeScreenNavigationProp = NativeStackNavigationProp<RootStackPar
 export type AuthScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'AuthScreen'>;
 export type DailyScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Daily'>;
 export type TodoScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Todo'>;
-export type General2creenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'General2'>;
+export type GeneralcreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'General'>;
 export type PreventiveScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Preventive'>;
 export type EmergencyScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Emergency'>;
 export type ProfileScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Profile'>;
@@ -74,7 +74,7 @@ export default function App() {
           options={{ headerShown: false  }} // Título personalizado
         />
           <Stack.Screen 
-          name="General2" 
+          name="General" 
           component={General2Screen}
           options={{ headerShown: false  }} // Título personalizado
         />
