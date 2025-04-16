@@ -1,76 +1,167 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { 
+  StyleSheet, 
+  View, 
+  TextInput, 
+  TouchableOpacity, 
+  Text, 
+  FlatList, 
+  Image, 
+  KeyboardAvoidingView, 
+  Platform,
+  ScrollView
+} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { AntDesign } from '@expo/vector-icons'; // Requiere instalar @expo/vector-icons
+import * as ImagePicker from 'expo-image-picker';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
+import DateTimePicker from '@react-native-community/datetimepicker';
+
+type JournalEntry = {
+  id: string;
+  text: string;
+  date: Date;
+  image?: string;
+};
 
 const DailyScreen = ({ navigation }: any) => {
-  const [isLogged, setIsLogged] = React.useState(false);
+  const [entries, setEntries] = useState<JournalEntry[]>([]);
+  const [newEntry, setNewEntry] = useState('');
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [date, setDate] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
+
+  useEffect(() => {
+    // Aquí cargarías las entradas desde tu base de datos al iniciar
+    // loadEntries();
+  }, []);
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setSelectedImage(result.assets[0].uri);
+    }
+  };
+
+  const addEntry = () => {
+    if (!newEntry.trim() && !selectedImage) return;
+
+    const entry: JournalEntry = {
+      id: Date.now().toString(),
+      text: newEntry,
+      date: new Date(date),
+      image: selectedImage || undefined
+    };
+
+    setEntries([entry, ...entries]);
+    setNewEntry('');
+    setSelectedImage(null);
+    setDate(new Date());
+    
+    // Aquí guardarías la entrada en tu base de datos
+    // saveEntry(entry);
+  };
+
+  const renderEntry = ({ item }: { item: JournalEntry }) => (
+    <View style={styles.entryContainer}>
+      <Text style={styles.entryDate}>
+        {item.date.toLocaleDateString()} - {item.date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+      </Text>
+      
+      {item.image && (
+        <Image source={{ uri: item.image }} style={styles.entryImage} />
+      )}
+      
+      {item.text && <Text style={styles.entryText}>{item.text}</Text>}
+      
+      <View style={styles.timelineConnector} />
+    </View>
+  );
+
+  const onChangeDate = (event: any, selectedDate?: Date) => {
+    setShowDatePicker(false);
+    if (selectedDate) {
+      setDate(selectedDate);
+    }
+  };
 
   return (
     <LinearGradient
-      colors={['#4c669f', '#242afb', '#090ffa']} // Degradado naranja a amarillo
+      colors={['#4c669f', '#242afb', '#090ffa']}
       style={styles.container}
     >
-    <TouchableOpacity
-      style={styles.backButton}
-      onPress={() => navigation.navigate('Todo')}
-    >
-      {/* icono usado para devolver a todoScreen */}
-      <AntDesign name="doubleleft" size={24} color="white" />
-    </TouchableOpacity>
-
-      <View style={styles.content}>
-        <Image 
-          // source={require('./assets/auth-icon.png')} // Reemplaza con tu imagen
-          source={{ uri: 'https://via.placeholder.com/100' }} 
-          style={styles.logo}
+      <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.navigate('Todo')}
+      >
+        {/* icono usado para devolver a todoScreen */}
+            <AntDesign name="doubleleft" size={24} color="white" />
+      </TouchableOpacity>
+      <View style={styles.content}> 
+        <Text style={styles.title}>Historia Diaria</Text>
+      </View>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.keyboardAvoidingView}
+      >
+        <FlatList
+          data={entries}
+          renderItem={renderEntry}
+          keyExtractor={(item) => item.id}
+          inverted
+          contentContainerStyle={styles.entriesList}
+          ListHeaderComponent={<View style={styles.listFooter} />}
         />
         
-        {isLogged ? (
-          <>
-            <Text style={styles.welcomeText}>¡Bienvenido de vuelta!</Text>
+        <View style={styles.inputContainer}>
+          <TouchableOpacity onPress={pickImage} style={styles.mediaButton}>
+            <Ionicons name="camera" size={24} color="white" />
+          </TouchableOpacity>
+          
+          <TouchableOpacity onPress={() => setShowDatePicker(true)} style={styles.dateButton}>
+            <Ionicons name="calendar" size={24} color="white" />
+          </TouchableOpacity>
+          
+          <TextInput
+            style={styles.input}
+            value={newEntry}
+            onChangeText={setNewEntry}
+            placeholder="Escribe tu entrada de diario..."
+            placeholderTextColor="#aaa"
+            multiline
+          />
+          
+          <TouchableOpacity onPress={addEntry} style={styles.sendButton}>
+            <Ionicons name="send" size={24} color="white" />
+          </TouchableOpacity>
+        </View>
+        
+        {selectedImage && (
+          <View style={styles.imagePreviewContainer}>
+            <Image source={{ uri: selectedImage }} style={styles.imagePreview} />
             <TouchableOpacity 
-              style={[styles.button, styles.mainButton]}
-              onPress={() => navigation.navigate('Home')}
+              style={styles.removeImageButton} 
+              onPress={() => setSelectedImage(null)}
             >
-              <Text style={styles.buttonText}>Continuar a la App</Text>
+              <Ionicons name="close" size={20} color="white" />
             </TouchableOpacity>
-          </>
-        ) : (
-          <>
-            <Text style={styles.title}>Estoy Daily</Text>
-            
-            <TouchableOpacity 
-              style={[styles.button, styles.googleButton]}
-              onPress={() => console.log('Google login')}
-            >
-              <AntDesign name="google" size={20} color="white" />
-              <Text style={[styles.buttonText, { marginLeft: 10 }]}>Continuar con Google</Text>
-            </TouchableOpacity>
-              
-            <TouchableOpacity  
-              style={[styles.button, styles.googleButton2]}
-              onPress={() => navigation.navigate('AuthScreen')}
-                  // activeOpacity={0.7} // Feedback táctil suave
-                                          >
-              <Text style={[styles.buttonText, { marginLeft: 10 }]}>Voy para AuthScreen</Text>
-            </TouchableOpacity>
-
-            <View style={styles.divider}>
-              <View style={styles.dividerLine} />
-              <Text style={styles.dividerText}>o</Text>
-              <View style={styles.dividerLine} />
-            </View>
-
-            <TouchableOpacity 
-              style={[styles.button, styles.emailButton]}
-              onPress={() => navigation.navigate('General')}
-            >
-              <Text style={[styles.buttonText, { color: '#FF7E5F' }]}>volver a General</Text>
-            </TouchableOpacity>
-          </>
+          </View>
         )}
-      </View>
+      </KeyboardAvoidingView>
+      
+      {showDatePicker && (
+        <DateTimePicker
+          value={date}
+          mode="datetime"
+          display="default"
+          onChange={onChangeDate}
+        />
+      )}
     </LinearGradient>
   );
 };
@@ -78,30 +169,15 @@ const DailyScreen = ({ navigation }: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
   },
   content: {
     padding: 20,
     alignItems: 'center',
     width: '100%',
   },
-  logo: {
-    width: 100,
-    height: 100,
-    marginBottom: 30,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: 'white',
-    marginBottom: 30,
-  },
-  welcomeText: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: 'white',
-    marginBottom: 40,
-    textAlign: 'center',
+  keyboardAvoidingView: {
+    flex: 1,
+   
   },
   backButton: {
     position: 'absolute',
@@ -110,68 +186,94 @@ const styles = StyleSheet.create({
     zIndex: 10,
     padding: 10,
   },
-  backButtonText: {
-    color: 'white',
-    fontSize: 16,
-  },  
-  button: {
-    width: '80%',
-    paddingVertical: 15,
-    borderRadius: 30,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 15,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+  entriesList: {
+    paddingBottom: 20,
   },
-  mainButton: {
+  entryContainer: {
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    borderRadius: 10,
+    padding: 15,
+    marginHorizontal: 15,
+    marginVertical: 8,
+    position: 'relative',
+  },
+  entryDate: {
+    color: '#555',
+    fontSize: 12,
+    marginBottom: 8,
+  },
+  entryText: {
+    fontSize: 16,
+    color: '#333',
+    marginTop: 5,
+  },
+  entryImage: {
+    width: '100%',
+    height: 200,
+    borderRadius: 8,
+    marginTop: 10,
+  },
+  timelineConnector: {
+    position: 'absolute',
+    left: -15,
+    top: 30,
+    bottom: -8,
+    width: 2,
     backgroundColor: 'white',
   },
-  googleButton: {
-    backgroundColor: '#DB4437',
-  },
-  googleButton2: {
-    backgroundColor: '#9798AA',
-  },
-  emailButton: {
-    backgroundColor: 'white',
-    borderWidth: 1,
-    borderColor: '#FF7E5F',
-  },
-  buttonText: {
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  divider: {
+  inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 20,
-    width: '80%',
+    padding: 10,
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
   },
-  dividerLine: {
+  input: {
     flex: 1,
-    height: 1,
-    backgroundColor: 'white',
-    opacity: 0.5,
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    borderRadius: 20,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    marginHorizontal: 5,
+    maxHeight: 100,
+    color: '#333',
   },
-  dividerText: {
-    color: 'white',
-    marginHorizontal: 10,
-    fontSize: 14,
+  mediaButton: {
+    padding: 8,
   },
-  registerLink: {
-    marginTop: 20,
+  dateButton: {
+    padding: 8,
   },
-  registerText: {
-    color: 'white',
+  sendButton: {
+    padding: 8,
+    marginLeft: 5,
   },
-  registerBold: {
+  imagePreviewContainer: {
+    position: 'relative',
+    padding: 10,
+  },
+  imagePreview: {
+    width: 100,
+    height: 100,
+    borderRadius: 8,
+  },
+  removeImageButton: {
+    position: 'absolute',
+    top: 5,
+    right: 5,
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    borderRadius: 10,
+    padding: 2,
+  },
+  listFooter: {
+    height: 20,
+  },
+  title: {
+    fontSize: 24,
     fontWeight: 'bold',
-    textDecorationLine: 'underline',
+    color: 'white',
+    marginBottom: 30,
+    marginTop: 30,
+    right: 20,
   },
 });
 
