@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  StyleSheet, 
-  View, 
-  TextInput, 
-  TouchableOpacity, 
-  Text, 
-  FlatList, 
-  Image, 
-  KeyboardAvoidingView, 
+import {
+  StyleSheet,
+  View,
+  TextInput,
+  TouchableOpacity,
+  Text,
+  FlatList,
+  Image,
+  KeyboardAvoidingView,
   Platform,
   ScrollView
 } from 'react-native';
@@ -62,7 +62,7 @@ const RouteScreen = ({ navigation }: any) => {
     setNewEntry('');
     setSelectedImage(null);
     setDate(new Date());
-    
+
     // Aquí guardarías la entrada en tu base de datos
     // saveEntry(entry);
   };
@@ -70,15 +70,15 @@ const RouteScreen = ({ navigation }: any) => {
   const renderEntry = ({ item }: { item: JournalEntry }) => (
     <View style={styles.entryContainer}>
       <Text style={styles.entryDate}>
-        {item.date.toLocaleDateString()} - {item.date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+        {item.date.toLocaleDateString()} - {item.date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
       </Text>
-      
+
       {item.image && (
         <Image source={{ uri: item.image }} style={styles.entryImage} />
       )}
-      
+
       {item.text && <Text style={styles.entryText}>{item.text}</Text>}
-      
+
       <View style={styles.timelineConnector} />
     </View>
   );
@@ -96,13 +96,13 @@ const RouteScreen = ({ navigation }: any) => {
       style={styles.container}
     >
       <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => navigation.navigate('Todo')}
+        style={styles.backButton}
+        onPress={() => navigation.navigate('Todo')}
       >
         {/* icono usado para devolver a todoScreen */}
-            <AntDesign name="doubleleft" size={24} color="white" />
+        <AntDesign name="doubleleft" size={24} color="white" />
       </TouchableOpacity>
-      <View style={styles.content}> 
+      <View style={styles.content}>
         <Text style={styles.title}>Mis Rutas</Text>
       </View>
       <KeyboardAvoidingView
@@ -117,16 +117,16 @@ const RouteScreen = ({ navigation }: any) => {
           contentContainerStyle={styles.entriesList}
           ListHeaderComponent={<View style={styles.listFooter} />}
         />
-        
+
         <View style={styles.inputContainer}>
           <TouchableOpacity onPress={pickImage} style={styles.mediaButton}>
             <Ionicons name="camera" size={24} color="white" />
           </TouchableOpacity>
-          
+
           <TouchableOpacity onPress={() => setShowDatePicker(true)} style={styles.dateButton}>
             <Ionicons name="calendar" size={24} color="white" />
           </TouchableOpacity>
-          
+
           <TextInput
             style={styles.input}
             value={newEntry}
@@ -135,17 +135,17 @@ const RouteScreen = ({ navigation }: any) => {
             placeholderTextColor="#aaa"
             multiline
           />
-          
+
           <TouchableOpacity onPress={addEntry} style={styles.sendButton}>
             <Ionicons name="send" size={24} color="white" />
           </TouchableOpacity>
         </View>
-        
+
         {selectedImage && (
           <View style={styles.imagePreviewContainer}>
             <Image source={{ uri: selectedImage }} style={styles.imagePreview} />
-            <TouchableOpacity 
-              style={styles.removeImageButton} 
+            <TouchableOpacity
+              style={styles.removeImageButton}
               onPress={() => setSelectedImage(null)}
             >
               <Ionicons name="close" size={20} color="white" />
@@ -153,7 +153,7 @@ const RouteScreen = ({ navigation }: any) => {
           </View>
         )}
       </KeyboardAvoidingView>
-      
+
       {showDatePicker && (
         <DateTimePicker
           value={date}
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
   },
   keyboardAvoidingView: {
     flex: 1,
-   
+
   },
   backButton: {
     position: 'absolute',

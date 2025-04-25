@@ -19,41 +19,41 @@ const TodoScreen = ({ navigation }: any) => {
 
   // Datos de las tarjetas con imágenes
   const cards = [
-    { 
-      id: 1, 
-      title: 'Profile', 
+    {
+      id: 1,
+      title: 'Profile',
       subtitle: 'Perfil de usuario',
       color: '#9C27B0', // Morado
       screenName: 'Profile',
       image: demoImages[3]
     },
-    { 
-      id: 2, 
-      title: 'Daily', 
+    {
+      id: 2,
+      title: 'Daily',
       subtitle: 'Actividades diarias',
       color: '#4CAF50', // Verde
       screenName: 'Daily',
       image: demoImages[0]
     },
-    { 
-      id: 3, 
-      title: 'Preventive', 
+    {
+      id: 3,
+      title: 'Preventive',
       subtitle: 'Mantenimiento preventivo',
       color: '#2196F3', // Azul
       screenName: 'Preventive',
       image: demoImages[1]
     },
-    { 
-      id: 4, 
-      title: 'Emergency', 
+    {
+      id: 4,
+      title: 'Emergency',
       subtitle: 'Casos de emergencia',
       color: '#FF5252', // Rojo
       screenName: 'Emergency',
       image: demoImages[2]
     },
-    { 
-      id: 5, 
-      title: 'Route', 
+    {
+      id: 5,
+      title: 'Route',
       subtitle: 'Perfil de usuario',
       color: '#9C27B0', // Morado
       screenName: 'Route',
@@ -61,22 +61,22 @@ const TodoScreen = ({ navigation }: any) => {
     },
   ];
   const exitApp = () => {
-      Alert.alert(
-        'Salir',
-        '¿Estás seguro de que quieres salir de la aplicación?',
-        [
-          {
-            text: 'Cancelar',
-            style: 'cancel',
-          },
-          {
-            text: 'Salir',
-            onPress: () => BackHandler.exitApp(),
-          },
-        ],
-        { cancelable: false }
-      );
-   };
+    Alert.alert(
+      'Salir',
+      '¿Estás seguro de que quieres salir de la aplicación?',
+      [
+        {
+          text: 'Cancelar',
+          style: 'cancel',
+        },
+        {
+          text: 'Salir',
+          onPress: () => BackHandler.exitApp(),
+        },
+      ],
+      { cancelable: false }
+    );
+  };
 
 
   return (
@@ -85,21 +85,21 @@ const TodoScreen = ({ navigation }: any) => {
       style={styles.container}
     >
       <TouchableOpacity
-      style={styles.backButton}
-      onPress={() => navigation.navigate('AuthScreen')}
-    >
-      <AntDesign name="doubleleft" size={34} color="white" />
-    </TouchableOpacity>
+        style={styles.backButton}
+        onPress={() => navigation.navigate('AuthScreen')}
+      >
+        <AntDesign name="doubleleft" size={34} color="white" />
+      </TouchableOpacity>
       <TouchableOpacity
-      style={styles.exitButton}
-      onPress={exitApp}
-    >
-      <AntDesign name="logout" size={24} color="white" />
-    </TouchableOpacity>
+        style={styles.exitButton}
+        onPress={exitApp}
+      >
+        <AntDesign name="logout" size={24} color="white" />
+      </TouchableOpacity>
       <View style={styles.innerContainer}>
-      <Text style={styles.title}></Text>
+        <Text style={styles.title}></Text>
         <Text style={styles.title}>Opciones Principales</Text>
-        
+
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -110,15 +110,15 @@ const TodoScreen = ({ navigation }: any) => {
           {cards.map((card) => (
             <TouchableOpacity
               key={card.id}
-              style={[styles.card, { 
-                backgroundColor: card.color, 
-                width: cardWidth, 
-                marginHorizontal: cardMargin 
+              style={[styles.card, {
+                backgroundColor: card.color,
+                width: cardWidth,
+                marginHorizontal: cardMargin
               }]}
               onPress={() => navigation.navigate(card.screenName)}
             >
-              <Image 
-                source={{ uri: card.image }} 
+              <Image
+                source={{ uri: card.image }}
                 style={styles.cardImage}
                 resizeMode="contain"
               />
@@ -128,7 +128,7 @@ const TodoScreen = ({ navigation }: any) => {
           ))}
         </ScrollView>
       </View>
-    </LinearGradient>  
+    </LinearGradient>
   );
 };
 
