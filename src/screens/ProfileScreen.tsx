@@ -1,19 +1,19 @@
 import React from 'react';
-import { 
-  View, 
-  Text, 
-  Image, 
-  StyleSheet, 
-  TouchableOpacity, 
-  ScrollView, 
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
   Dimensions,
-  Platform 
+  Platform
 } from 'react-native';
-import { AntDesign } from '@expo/vector-icons'; 
+import { AntDesign } from '@expo/vector-icons';
 
 const { width, height } = Dimensions.get('window');
 
-const ProfileScreen = ({ navigation }: any)  => {
+const ProfileScreen = ({ navigation }: any) => {
   // Datos de ejemplo del usuario
   const user = {
     name: 'Kawasaki Ninja',
@@ -32,34 +32,34 @@ const ProfileScreen = ({ navigation }: any)  => {
   const editButtonSize = avatarSize * 0.20;
 
   return (
-    <ScrollView 
+    <ScrollView
       style={styles.container}
       contentContainerStyle={styles.contentContainer}
       showsVerticalScrollIndicator={false}
     >
-    <TouchableOpacity
-      style={styles.backButton}
-      onPress={() => navigation.navigate('Todo')}
-    >
-      {/* icono usado para devolver a todoScreen */}
-      <AntDesign name="doubleleft" size={34} color="black" />
-    </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.backButton}
+        onPress={() => navigation.navigate('Todo')}
+      >
+        {/* icono usado para devolver a todoScreen */}
+        <AntDesign name="doubleleft" size={34} color="black" />
+      </TouchableOpacity>
       {/* Encabezado del perfil */}
       <View style={styles.header}>
         <View style={styles.avatarContainer}>
-          <Image 
-            source={user.avatar} 
+          <Image
+            source={user.avatar}
             style={[
-              styles.avatar, 
-              { 
-                width: avatarSize, 
+              styles.avatar,
+              {
+                width: avatarSize,
                 height: avatarSize,
-                borderRadius: avatarSize / 2 
+                borderRadius: avatarSize / 2
               }
-            ]} 
+            ]}
             resizeMode="cover"
           />
-          <TouchableOpacity 
+          <TouchableOpacity
             style={[
               styles.editAvatarButton,
               {
@@ -74,7 +74,7 @@ const ProfileScreen = ({ navigation }: any)  => {
             <Text style={styles.editAvatarButtonText}>✏️</Text>
           </TouchableOpacity>
         </View>
-        
+
         {/* <View style={styles.statsContainer}>
           <View style={styles.statItem}>
             <Text style={styles.statNumber}>{user.posts}</Text>
@@ -95,9 +95,9 @@ const ProfileScreen = ({ navigation }: any)  => {
       <View style={styles.infoContainer}>
         <Text style={styles.name}>{user.name}</Text>
         <Text style={styles.username}>{user.username}</Text>
-        
+
         <Text style={styles.bio}>{user.bio}</Text>
-        
+
         <View style={styles.detailRow}>
           <Text style={styles.detailText}>🌐 {user.website}</Text>
         </View>
@@ -112,9 +112,9 @@ const ProfileScreen = ({ navigation }: any)  => {
           <Text style={styles.editButtonText}>Editar perfil</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.shareButton}
-        onPress={() => navigation.navigate('General')}
+          onPress={() => navigation.navigate('General')}
         >
-          
+
           <Text style={styles.shareButtonText}>General</Text>
         </TouchableOpacity>
       </View>
