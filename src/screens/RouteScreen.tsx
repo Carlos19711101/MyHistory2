@@ -92,7 +92,7 @@ const RouteScreen = ({ navigation }: any) => {
 
   return (
     <LinearGradient
-      colors={['#4c669f', '#242afb', '#58fd03']}
+      colors={['#090FFA', '#242afb', '#58fd03']}
       style={styles.container}
     >
       <TouchableOpacity

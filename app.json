@@ -10,7 +10,7 @@
     "splash": {
       "image": "../../assets/imagen/eventos_Diarios.png",
       "resizeMode": "contain",
-      "backgroundColor": "#090FFA"
+      "backgroundColor": "#0f8403"
     },
     "ios": {
       "supportsTablet": true

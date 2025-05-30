@@ -1,50 +1,79 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions, Image, BackHandler, Alert } from 'react-native';
+import React, { useRef, useState, useEffect } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+  ScrollView,
+  Animated,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
+  Platform,
+  Image,
+  BackHandler, 
+  Alert,
+  TouchableOpacity
+} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { AntDesign } from '@expo/vector-icons';
 
-const { width: screenWidth } = Dimensions.get('window');
-const cardWidth = screenWidth * 0.8;
-const cardMargin = screenWidth * 0.02;
+const { width } = Dimensions.get('window');
+const CARD_WIDTH = width * 0.6; // 60% para tarjeta central
+const SIDE_CARD_WIDTH = width * 0.4; // 40% para tarjetas laterales
+const SPACING = 0.6;
+const MARGIN_HORIZONTAL = (width - CARD_WIDTH) / 2 - SPACING;
 
-const TodoScreen = ({ navigation }: any) => {
-  // Array de imágenes de prueba (puedes reemplazar con tus URLs)
+interface CardItem {
+  id: string;
+  color?: string;
+  text?: string;
+  title?: string;
+  subtitle?: string;
+  screenName?: string;
+  image?: string;
+}
+
+interface TodoScreenProps {
+  navigation: {
+    navigate: (screenName: string) => void;
+    goBack: () => void;
+  };
+}
+
+const TodoScreen: React.FC<TodoScreenProps> = ({ navigation }: any) => {
+  const scrollX = useRef(new Animated.Value(0)).current;
+  const scrollViewRef = useRef<ScrollView>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Array de imágenes de prueba
   const demoImages = [
     'https://cdn-icons-png.flaticon.com/512/3652/3652191.png', // Calendario
     'https://cdn-icons-png.flaticon.com/512/159/159469.png',   // Herramientas
     'https://cdn-icons-png.flaticon.com/512/2781/2781395.png', // Emergencia
     'https://cdn-icons-png.flaticon.com/512/1144/1144760.png', // Perfil
-    'https://cdn-icons-png.flaticon.com/512/447/447031.png' // Ruta
+    'https://cdn-icons-png.flaticon.com/512/447/447031.png'    // Ruta
   ];
 
-  // Datos de las tarjetas con imágenes
-  const cards = [
+  // Tarjetas originales
+  const originalCards: CardItem[] = [
     { 
-      id: 1, 
+      id: '1', 
       title: 'Profile', 
       subtitle: 'Perfil de usuario',
-      color: '#9C27B0', // Morado
+      color: '#33ee0d', // Verde
       screenName: 'Profile',
       image: demoImages[3]
     },
     { 
-      id: 2, 
+      id: '2', 
       title: 'Daily', 
       subtitle: 'Actividades diarias',
-      color: '#4CAF50', // Verde
+      color: '#eb0dee', // Fusia
       screenName: 'Daily',
       image: demoImages[0]
     },
     { 
-      id: 3, 
-      title: 'Preventive', 
-      subtitle: 'Mantenimiento preventivo',
-      color: '#2196F3', // Azul
-      screenName: 'Preventive',
-      image: demoImages[1]
-    },
-    { 
-      id: 4, 
+      id: '3', 
       title: 'Emergency', 
       subtitle: 'Casos de emergencia',
       color: '#FF5252', // Rojo
@@ -52,93 +81,261 @@ const TodoScreen = ({ navigation }: any) => {
       image: demoImages[2]
     },
     { 
-      id: 5, 
+      id: '4', 
+      title: 'Preventive', 
+      subtitle: 'Mantenimiento preventivo',
+      color: '#0deeda', // Azul Aguamarina
+      screenName: 'Preventive',
+      image: demoImages[1]
+    },
+    { 
+      id: '5', 
+      title: 'General', 
+      subtitle: 'Mantenimiento general',
+      color: '#090FFA', // Azul
+      screenName: 'General',
+      image: demoImages[0]
+    },
+    { 
+      id: '6', 
       title: 'Route', 
-      subtitle: 'Perfil de usuario',
-      color: '#9C27B0', // Morado
+      subtitle: 'Rutas y direcciones',
+      color: '#810dee', // Morado
       screenName: 'Route',
       image: demoImages[4]
     },
   ];
-  const exitApp = () => {
-      Alert.alert(
-        'Salir',
-        '¿Estás seguro de que quieres salir de la aplicación?',
-        [
-          {
-            text: 'Cancelar',
-            style: 'cancel',
-          },
-          {
-            text: 'Salir',
-            onPress: () => BackHandler.exitApp(),
-          },
-        ],
-        { cancelable: false }
-      );
-   };
 
+  // Duplicamos tarjetas para efecto infinito
+  const cards = [
+    ...originalCards.slice(-1).map(card => ({ ...card, id: `pre-${card.id}` })),
+    ...originalCards,
+    ...originalCards.slice(0, 1).map(card => ({ ...card, id: `post-${card.id}` })),
+  ];
+
+  const totalCards = originalCards.length;
+
+  // Configuración inicial del scroll
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (scrollViewRef.current) {
+        scrollViewRef.current.scrollTo({
+          x: CARD_WIDTH + SPACING * 2, // Posición inicial (segunda tarjeta)
+          animated: false,
+        });
+      }
+    }, 50);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const contentOffset = event.nativeEvent.contentOffset.x;
+    const index = Math.round(contentOffset / (CARD_WIDTH + SPACING * 2));
+    
+    // Efecto infinito
+    if (index >= cards.length - 1) {
+      scrollViewRef.current?.scrollTo({
+        x: CARD_WIDTH + SPACING * 2, // Vuelve al inicio real
+        animated: false,
+      });
+    } else if (index <= 0) {
+      scrollViewRef.current?.scrollTo({
+        x: (CARD_WIDTH + SPACING * 2) * (cards.length - 2), // Vuelve al final real
+        animated: false,
+      });
+    }
+
+    // Actualizar índice actual
+    const adjustedIndex = (index - 1 + totalCards) % totalCards;
+    setCurrentIndex(adjustedIndex);
+
+    // Animación
+    Animated.event(
+      [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+      { useNativeDriver: false }
+    )(event);
+  };
+
+  const handleMomentumScrollEnd = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const contentOffset = event.nativeEvent.contentOffset.x;
+    const index = Math.round(contentOffset / (CARD_WIDTH + SPACING * 2));
+    const adjustedIndex = (index - 1 + totalCards) % totalCards;
+    setCurrentIndex(adjustedIndex);
+  };
+
+  const handleCardPress = (screenName: string | undefined) => {
+    if (screenName) {
+      navigation.navigate(screenName);
+    }
+  };
+
+  const exitApp = () => {
+    Alert.alert(
+      'Salir',
+      '¿Estás seguro de que quieres salir de la aplicación?',
+      [
+        {
+          text: 'Cancelar',
+          style: 'cancel',
+        },
+        {
+          text: 'Salir',
+          onPress: () => BackHandler.exitApp(),
+        },
+      ],
+      { cancelable: false }
+    );
+  };
 
   return (
     <LinearGradient
-      colors={['#88D3CE', '#6E45E2', '#090FFA']}
-      style={styles.container}
+      colors={['#090FFA','#88D3CE', '#6E45E2']}
+      style={styles.containerGlobal}
     >
       <TouchableOpacity
-      style={styles.backButton}
-      onPress={() => navigation.navigate('AuthScreen')}
-    >
-      <AntDesign name="doubleleft" size={34} color="white" />
-    </TouchableOpacity>
-      <TouchableOpacity
-      style={styles.exitButton}
-      onPress={exitApp}
-    >
-      <AntDesign name="logout" size={24} color="white" />
-    </TouchableOpacity>
-      <View style={styles.innerContainer}>
-      <Text style={styles.title}></Text>
-        <Text style={styles.title}>Opciones Principales</Text>
-        
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.carouselContainer}
-          snapToInterval={cardWidth + cardMargin * 2}
-          decelerationRate="fast"
-        >
-          {cards.map((card) => (
-            <TouchableOpacity
-              key={card.id}
-              style={[styles.card, { 
-                backgroundColor: card.color, 
-                width: cardWidth, 
-                marginHorizontal: cardMargin 
-              }]}
-              onPress={() => navigation.navigate(card.screenName)}
-            >
-              <Image 
-                source={{ uri: card.image }} 
-                style={styles.cardImage}
-                resizeMode="contain"
-              />
-              <Text style={styles.cardTitle}>{card.title}</Text>
-              <Text style={styles.cardSubtitle}>{card.subtitle}</Text>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
+        style={styles.backButton}
+        onPress={() => navigation.navigate('AuthScreen')}
+      >
+        <AntDesign name="doubleleft" size={34} color="white" />
+      </TouchableOpacity>
+
+      <View style={styles.content}> 
+        <Text style={styles.title}>Elige tu Historia</Text>
       </View>
-    </LinearGradient>  
+
+      <View style={styles.container}>
+        <ScrollView
+          ref={scrollViewRef}
+          horizontal
+          pagingEnabled
+          decelerationRate={Platform.OS === 'ios' ? 0.99 : 0.95}
+          showsHorizontalScrollIndicator={false}
+          snapToInterval={CARD_WIDTH + SPACING * 2}
+          contentContainerStyle={styles.scrollContainer}
+          onScroll={handleScroll}
+          onMomentumScrollEnd={handleMomentumScrollEnd}
+          scrollEventThrottle={16}
+          directionalLockEnabled={true}
+          alwaysBounceHorizontal={false}
+          bounces={false}
+          overScrollMode="never"
+        >
+          {cards.map((card, index) => {
+            const inputRange = [
+              (index - 1) * (CARD_WIDTH + SPACING * 2),
+              index * (CARD_WIDTH + SPACING * 2),
+              (index + 1) * (CARD_WIDTH + SPACING * 2),
+            ];
+
+            const scale = scrollX.interpolate({
+              inputRange,
+              outputRange: [0.8, 0.9, 0.8],
+              extrapolate: 'clamp',
+            });
+
+            const opacity = scrollX.interpolate({
+              inputRange,
+              outputRange: [0.5, 1, 0.5],
+              extrapolate: 'clamp',
+            });
+
+            return (
+              <TouchableOpacity 
+                key={card.id}
+                activeOpacity={0.8}
+                onPress={() => handleCardPress(card.screenName)}
+              >
+                <Animated.View
+                  style={[
+                    styles.card,
+                    {
+                      width: CARD_WIDTH,
+                      backgroundColor: card.color,
+                      transform: [{ scale }],
+                      opacity,
+                      marginLeft: index === 0 ? MARGIN_HORIZONTAL : SPACING,
+                      marginRight: index === cards.length - 1 ? MARGIN_HORIZONTAL : SPACING,
+                    },
+                  ]}
+                >
+                  {card.image && (
+                    <Image 
+                      source={{ uri: card.image }} 
+                      style={styles.cardImage}
+                      resizeMode="contain"
+                    />
+                  )}
+                  <Text style={styles.cardTitle}>{card.title}</Text>
+                  <Text style={styles.cardSubtitle}>{card.subtitle}</Text>
+                </Animated.View>
+              </TouchableOpacity>
+            );
+          })}
+        </ScrollView>
+        
+        {/* Indicadores de posición */}
+        <View style={styles.pagination}>
+          {originalCards.map((_, index) => (
+            <View
+              key={index}
+              style={[
+                styles.paginationDot,
+                currentIndex === index && styles.paginationDotActive,
+              ]}
+            />
+          ))}
+        </View>
+      </View>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  containerGlobal: {
     flex: 1,
   },
-  innerContainer: {
-    flex: 1,
-    paddingTop: 20,
+  container: {
+    height: 420,
+    marginVertical: 80,
+    overflow: 'hidden',
+  },
+  content: {
+    padding: 20,
+    alignItems: 'center',
+    width: '100%',
+  },
+  scrollContainer: {
+    alignItems: 'center',
+  },
+  card: {
+    height: 250,
+    borderRadius: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 8,
+  },
+  cardImage: {
+    width: 80,
+    height: 80,
+    marginBottom: 20,
+  },
+  cardTitle: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#fff',
+    marginBottom: 8,
+    textAlign: 'center',
+  },
+  cardSubtitle: {
+    fontSize: 14,
+    color: '#fff',
+    textAlign: 'center',
+    paddingHorizontal: 10,
   },
   backButton: {
     position: 'absolute',
@@ -147,68 +344,30 @@ const styles = StyleSheet.create({
     zIndex: 10,
     padding: 10,
   },
+  pagination: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 16,
+  },
+  paginationDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: '#ccc',
+    marginHorizontal: 4,
+  },
+  paginationDotActive: {
+    backgroundColor: '#333',
+    width: 16,
+  },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    textAlign: 'center',
-    marginVertical: 20,
     color: 'white',
-    textShadowColor: 'rgba(0, 0, 0, 0.5)',
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 3,
-  },
-  carouselContainer: {
-    paddingHorizontal: cardMargin,
-    alignItems: 'center',
-    paddingBottom: 20,
-  },
-  card: {
-    height: cardWidth * 0.9, // Aumenté un poco el alto para las imágenes
-    borderRadius: 15,
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 4.65,
-    elevation: 8,
-    padding: 15,
-  },
-  cardImage: {
-    width: '40%',
-    height: '40%',
-    marginBottom: 15,
-  },
-  cardTitle: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: 'white',
-    textAlign: 'center',
-    textShadowColor: 'rgba(0, 0, 0, 0.5)',
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 2,
-    marginBottom: 5,
-  },
-  cardSubtitle: {
-    fontSize: 14,
-    color: 'white',
-    textAlign: 'center',
-    textShadowColor: 'rgba(0, 0, 0, 0.5)',
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 2,
-  },
-  exitButton: {
-    position: 'absolute',
-    top: 50,
-    left: 20,
-    zIndex: 10,
-    padding: 10,
-    margin: 10,
-  },
-  exitButtonText: {
+    marginBottom: 30,
+    marginTop: 30,
+    right: 20,
   },
 });
 

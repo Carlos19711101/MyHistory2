@@ -5,7 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 const WelcomeScreen = ({ navigation }: any) => {
   return (
     <LinearGradient
-      colors={['#090ffa', '#6E45E2', '#88D3CE']} // Degradado de morado a azul verdoso - psicológicamente atractivo
+      colors={['#090FFA', '#6E45E2', '#88D3CE']} // Degradado de morado a azul verdoso - psicológicamente atractivo
       style={styles.container}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}

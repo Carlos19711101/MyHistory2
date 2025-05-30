@@ -25,7 +25,7 @@ const AuthScreen = ({ navigation }: any) => {
      };
   return (
     <LinearGradient
-      colors={['#090ffa', '#6E45E2', '#88D3CE']} // Degradado de colores
+      colors={['#090FFA', '#6E45E2', '#88D3CE']} // Degradado de colores
       style={styles.container}
     >
       <TouchableOpacity 
@@ -87,18 +87,6 @@ const AuthScreen = ({ navigation }: any) => {
               <Text style={[styles.buttonText, { marginLeft: 10 }]}>Continuar con Google</Text>
             </TouchableOpacity>
            
-            {/* <View style={styles.divider}>
-              <View style={styles.dividerLine} />
-              <Text style={styles.dividerText}>o</Text>
-              <View style={styles.dividerLine} />
-            </View> */}
-
-            {/* <TouchableOpacity 
-              style={[styles.button, styles.emailButton]}
-              onPress={() => navigation.navigate('Login')}
-            >
-              <Text style={[styles.buttonText, { color: '#FF7E5F' }]}>Usar correo electrónico</Text>
-            </TouchableOpacity> */}
 
             <TouchableOpacity 
               style={styles.registerLink}

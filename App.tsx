@@ -8,9 +8,9 @@ import PreventiveScreen from './src/screens/PreventiveScreen';
 import EmergencyScreen from './src/screens/EmergencyScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import General2Screen from './src/screens/GeneralScreen';
-import MainSlideshow from './src/presentation/components/MainSlideshow';
 import TodoScreen from './src/screens/TodoScreen';
 import RouteScreen from './src/screens/RouteScreen';
+import GeneralScreen from './src/screens/GeneralScreen';
 // 1. Define los tipos de rutas
 type RootStackParamList = {
   Welcome: undefined;
@@ -21,7 +21,6 @@ type RootStackParamList = {
   Preventive: undefined;
   Emergency: undefined;
   Profile: undefined; 
-  MainSlideshow: undefined;
   Route: undefined// Agrega más rutas aquí cuando las necesites
 };
 
@@ -34,7 +33,6 @@ export type GeneralcreenNavigationProp = NativeStackNavigationProp<RootStackPara
 export type PreventiveScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Preventive'>;
 export type EmergencyScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Emergency'>;
 export type ProfileScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Profile'>;
-export type MainSlideshowScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'MainSlideshow'>;
 export type RouteScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Route'>;
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -75,7 +73,7 @@ export default function App() {
         />
           <Stack.Screen 
           name="General" 
-          component={General2Screen}
+          component={GeneralScreen}
           options={{ headerShown: false  }} // Título personalizado
         />
          <Stack.Screen 
@@ -91,11 +89,6 @@ export default function App() {
          <Stack.Screen 
           name="Profile" 
           component={ProfileScreen}
-          options={{ headerShown: false  }} // Título personalizado
-        />
-          <Stack.Screen 
-          name="MainSlideshow" 
-          component={MainSlideshow}
           options={{ headerShown: false  }} // Título personalizado
         />
           <Stack.Screen 
