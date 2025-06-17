@@ -8,18 +8,18 @@
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "../../assets/imagen/eventos_Diarios.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#0f8403"
+      "backgroundColor": "#0f8403",
+      "resizeMode": "cover"
     },
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
+        "foregroundImage": "",
+        "backgroundColor": "#0f8403"
+      },
+      "package": "com.anonymous.MySimpleApp"
     },
     "web": {
       "favicon": "./assets/favicon.png"

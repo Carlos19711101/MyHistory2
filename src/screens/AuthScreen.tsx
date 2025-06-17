@@ -73,7 +73,7 @@ const AuthScreen = ({ navigation }: any) => {
             <TouchableOpacity 
                      // boton para pasar a la pantalla de GeneralScreen
                       style={[styles.button, styles.googleButton]}
-                      onPress={() => navigation.navigate('General2')}
+                      onPress={() => navigation.navigate('Todo')}
                       activeOpacity={0.7} // Feedback táctil suave
                     >
                       <Text style={styles.buttonText}>Registrate</Text>
