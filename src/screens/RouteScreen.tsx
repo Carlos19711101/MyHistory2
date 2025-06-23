@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   StyleSheet,
   View,
@@ -9,12 +9,16 @@ import {
   Image,
   KeyboardAvoidingView,
   Platform,
-  ScrollView
+  Alert,
+  Modal,
+  SafeAreaView
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as ImagePicker from 'expo-image-picker';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import CameraComponent, { CameraComponentRef } from '../components/CameraComponent';
 
 type JournalEntry = {
   id: string;
@@ -23,6 +27,9 @@ type JournalEntry = {
   image?: string;
 };
 
+// Clave única para rutas
+const STORAGE_KEY = '@journal_entries_route';
+
 const RouteScreen = ({ navigation }: any) => {
   const [entries, setEntries] = useState<JournalEntry[]>([]);
   const [newEntry, setNewEntry] = useState('');
@@ -30,13 +37,46 @@ const RouteScreen = ({ navigation }: any) => {
   const [date, setDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
 
+  // Manejo de cámara
+  const [cameraVisible, setCameraVisible] = useState(false);
+  const cameraRef = useRef<CameraComponentRef>(null);
+
   useEffect(() => {
-    // Aquí cargarías las entradas desde tu base de datos al iniciar
-    // loadEntries();
+    loadEntries();
   }, []);
 
+  useEffect(() => {
+    saveEntries(entries);
+  }, [entries]);
+
+  // Guardar entradas en AsyncStorage con clave exclusiva
+  const saveEntries = async (entriesToSave: JournalEntry[]) => {
+    try {
+      const jsonValue = JSON.stringify(entriesToSave);
+      await AsyncStorage.setItem(STORAGE_KEY, jsonValue);
+    } catch (e) {
+      console.error('Error guardando entradas:', e);
+    }
+  };
+
+  // Cargar entradas de AsyncStorage con clave exclusiva
+  const loadEntries = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem(STORAGE_KEY);
+      if (jsonValue != null) {
+        const loadedEntries = JSON.parse(jsonValue).map((entry: any) => ({
+          ...entry,
+          date: new Date(entry.date),
+        }));
+        setEntries(loadedEntries);
+      }
+    } catch (e) {
+      console.error('Error cargando entradas:', e);
+    }
+  };
+
   const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
+    const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
@@ -48,6 +88,19 @@ const RouteScreen = ({ navigation }: any) => {
     }
   };
 
+  const openCamera = () => setCameraVisible(true);
+  const closeCamera = () => setCameraVisible(false);
+
+  const takePicture = async () => {
+    if (cameraRef.current) {
+      const uri = await cameraRef.current.takePicture();
+      if (uri) {
+        setSelectedImage(uri);
+        closeCamera();
+      }
+    }
+  };
+
   const addEntry = () => {
     if (!newEntry.trim() && !selectedImage) return;
 
@@ -55,23 +108,42 @@ const RouteScreen = ({ navigation }: any) => {
       id: Date.now().toString(),
       text: newEntry,
       date: new Date(date),
-      image: selectedImage || undefined
+      image: selectedImage || undefined,
     };
 
     setEntries([entry, ...entries]);
     setNewEntry('');
     setSelectedImage(null);
     setDate(new Date());
+  };
 
-    // Aquí guardarías la entrada en tu base de datos
-    // saveEntry(entry);
+  const deleteEntry = (id: string) => {
+    Alert.alert(
+      'Eliminar entrada',
+      '¿Estás seguro de que quieres borrar este mensaje?',
+      [
+        { text: 'Cancelar', style: 'cancel' },
+        {
+          text: 'Eliminar',
+          style: 'destructive',
+          onPress: () => {
+            setEntries(entries.filter(entry => entry.id !== id));
+          },
+        },
+      ]
+    );
   };
 
   const renderEntry = ({ item }: { item: JournalEntry }) => (
     <View style={styles.entryContainer}>
-      <Text style={styles.entryDate}>
-        {item.date.toLocaleDateString()} - {item.date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-      </Text>
+      <View style={styles.entryHeader}>
+        <Text style={styles.entryDate}>
+          {item.date.toLocaleDateString()} - {item.date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+        </Text>
+        <TouchableOpacity onPress={() => deleteEntry(item.id)} style={styles.deleteButton}>
+          <Ionicons name="trash" size={20} color="#ff5252" />
+        </TouchableOpacity>
+      </View>
 
       {item.image && (
         <Image source={{ uri: item.image }} style={styles.entryImage} />
@@ -91,6 +163,7 @@ const RouteScreen = ({ navigation }: any) => {
   };
 
   return (
+  <SafeAreaView style={{ flex: 1 }}>
     <LinearGradient
       colors={['#090FFA', '#242afb', '#58fd03']}
       style={styles.container}
@@ -99,11 +172,10 @@ const RouteScreen = ({ navigation }: any) => {
         style={styles.backButton}
         onPress={() => navigation.navigate('Todo')}
       >
-        {/* icono usado para devolver a todoScreen */}
-        <AntDesign name="doubleleft" size={24} color="white" />
+        <AntDesign name="doubleleft" size={20} color="white" style={{ marginLeft: 0, marginTop: -25 }} />
       </TouchableOpacity>
       <View style={styles.content}>
-        <Text style={styles.title}>Mis Rutas</Text>
+        <Text style={styles.title}> Mis Rutas </Text>
       </View>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -119,19 +191,21 @@ const RouteScreen = ({ navigation }: any) => {
         />
 
         <View style={styles.inputContainer}>
-          <TouchableOpacity onPress={pickImage} style={styles.mediaButton}>
+          {/* Botón para abrir cámara */}
+          <TouchableOpacity onPress={openCamera} style={styles.mediaButton}>
             <Ionicons name="camera" size={24} color="white" />
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => setShowDatePicker(true)} style={styles.dateButton}>
-            <Ionicons name="calendar" size={24} color="white" />
+          {/* Botón para seleccionar imagen de galería */}
+          <TouchableOpacity onPress={pickImage} style={styles.mediaButton}>
+            <Ionicons name="image" size={24} color="white" />
           </TouchableOpacity>
 
           <TextInput
             style={styles.input}
             value={newEntry}
             onChangeText={setNewEntry}
-            placeholder="Escribe tu comentario aquí..."
+            placeholder="Escribe tu ruta aquí..."
             placeholderTextColor="#aaa"
             multiline
           />
@@ -162,7 +236,26 @@ const RouteScreen = ({ navigation }: any) => {
           onChange={onChangeDate}
         />
       )}
+
+      {/* Modal con el componente de cámara externo */}
+      <Modal visible={cameraVisible} animationType="slide">
+        <CameraComponent ref={cameraRef} onClose={closeCamera} />
+        <TouchableOpacity
+          onPress={takePicture}
+          style={{
+            position: 'absolute',
+            bottom: 40,
+            alignSelf: 'center',
+            backgroundColor: 'rgba(0,0,0,0.5)',
+            padding: 20,
+            borderRadius: 50,
+          }}
+        >
+          <Ionicons name="camera" size={50} color="white" />
+        </TouchableOpacity>
+      </Modal>
     </LinearGradient>
+  </SafeAreaView>
   );
 };
 
@@ -177,12 +270,12 @@ const styles = StyleSheet.create({
   },
   keyboardAvoidingView: {
     flex: 1,
-
+    paddingTop: 5,
   },
   backButton: {
     position: 'absolute',
     top: 50,
-    right: 20,
+    left: 30,
     zIndex: 10,
     padding: 10,
   },
@@ -197,10 +290,18 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     position: 'relative',
   },
+  entryHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
   entryDate: {
     color: '#555',
     fontSize: 12,
-    marginBottom: 8,
+  },
+  deleteButton: {
+    padding: 5,
   },
   entryText: {
     fontSize: 16,
@@ -225,6 +326,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 10,
+    marginBottom: 10,
     backgroundColor: 'rgba(0, 0, 0, 0.3)',
   },
   input: {
@@ -238,9 +340,6 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   mediaButton: {
-    padding: 8,
-  },
-  dateButton: {
     padding: 8,
   },
   sendButton: {
@@ -266,14 +365,14 @@ const styles = StyleSheet.create({
   },
   listFooter: {
     height: 20,
+    marginBottom: 5,
   },
   title: {
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: 'bold',
     color: 'white',
-    marginBottom: 30,
-    marginTop: 30,
-    right: 20,
+    marginBottom: 10,
+    marginTop: 10,
   },
 });
 

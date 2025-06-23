@@ -48,10 +48,12 @@ const TodoScreen: React.FC<TodoScreenProps> = ({ navigation }: any) => {
   // Array de imágenes de prueba
   const demoImages = [
     'https://cdn-icons-png.flaticon.com/512/3652/3652191.png', // Calendario
-    'https://cdn-icons-png.flaticon.com/512/159/159469.png',   // Herramientas
-    'https://cdn-icons-png.flaticon.com/512/2781/2781395.png', // Emergencia
-    'https://cdn-icons-png.flaticon.com/512/1144/1144760.png', // Perfil
-    'https://cdn-icons-png.flaticon.com/512/447/447031.png'    // Ruta
+    'https://cdn-icons-png.flaticon.com/128/4606/4606919.png',   // Herramientas
+    'https://cdn-icons-png.flaticon.com/128/805/805680.png', // Emergencia
+    'https://cdn-icons-png.flaticon.com/128/1048/1048334.png', // Perfil
+    'https://cdn-icons-png.flaticon.com/128/1133/1133816.png',   // Ruta
+    'https://cdn-icons-png.flaticon.com/128/11133/11133672.png'// Mantenimiento
+    
   ];
 
   // Tarjetas originales
@@ -59,7 +61,7 @@ const TodoScreen: React.FC<TodoScreenProps> = ({ navigation }: any) => {
     { 
       id: '1', 
       title: 'Profile', 
-      subtitle: 'Perfil de usuario',
+      subtitle: 'Motocicleta \n Datos  ',
       color: '#33ee0d', // Verde
       screenName: 'Profile',
       image: demoImages[3]
@@ -67,21 +69,14 @@ const TodoScreen: React.FC<TodoScreenProps> = ({ navigation }: any) => {
     { 
       id: '2', 
       title: 'Daily', 
-      subtitle: 'Actividades diarias',
+      subtitle: 'Actividades \n Diarias',
       color: '#eb0dee', // Fusia
       screenName: 'Daily',
       image: demoImages[0]
     },
+    
     { 
       id: '3', 
-      title: 'Emergency', 
-      subtitle: 'Casos de emergencia',
-      color: '#FF5252', // Rojo
-      screenName: 'Emergency',
-      image: demoImages[2]
-    },
-    { 
-      id: '4', 
       title: 'Preventive', 
       subtitle: 'Mantenimiento preventivo',
       color: '#0deeda', // Azul Aguamarina
@@ -89,17 +84,25 @@ const TodoScreen: React.FC<TodoScreenProps> = ({ navigation }: any) => {
       image: demoImages[1]
     },
     { 
-      id: '5', 
-      title: 'General', 
-      subtitle: 'Mantenimiento general',
+      id: '4', 
+      title: 'Mantenimiento', 
+      subtitle: 'General ',
       color: '#090FFA', // Azul
       screenName: 'General',
-      image: demoImages[0]
+      image: demoImages[5]
+    },
+    { 
+      id: '5', 
+      title: 'Emergency', 
+      subtitle: 'Casos de emergencia',
+      color: '#FF5252', // Rojo
+      screenName: 'Emergency',
+      image: demoImages[2]
     },
     { 
       id: '6', 
       title: 'Route', 
-      subtitle: 'Rutas y direcciones',
+      subtitle: '  Rutas \n  recorridos',
       color: '#810dee', // Morado
       screenName: 'Route',
       image: demoImages[4]
@@ -197,11 +200,11 @@ const TodoScreen: React.FC<TodoScreenProps> = ({ navigation }: any) => {
         style={styles.backButton}
         onPress={() => navigation.navigate('AuthScreen')}
       >
-        <AntDesign name="doubleleft" size={34} color="white" />
+        <AntDesign name="doubleleft" size={24} color="white" />
       </TouchableOpacity>
 
       <View style={styles.content}> 
-        <Text style={styles.title}>Elige tu Historia</Text>
+        <Text style={styles.title}>Tus Historias</Text>
       </View>
 
       <View style={styles.container}>
@@ -309,15 +312,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   card: {
-    height: 250,
-    borderRadius: 15,
+    height: 400,
+    borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 6,
-    elevation: 8,
+    elevation: 15,
   },
   cardImage: {
     width: 80,
@@ -340,9 +343,9 @@ const styles = StyleSheet.create({
   backButton: {
     position: 'absolute',
     top: 50,
-    right: 20,
+    left: 30,
     zIndex: 10,
-    padding: 10,
+    padding: 5,
   },
   pagination: {
     flexDirection: 'row',
@@ -362,12 +365,12 @@ const styles = StyleSheet.create({
     width: 16,
   },
   title: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: 'bold',
     color: 'white',
     marginBottom: 30,
     marginTop: 30,
-    right: 20,
+    right: -5,
   },
 });
 

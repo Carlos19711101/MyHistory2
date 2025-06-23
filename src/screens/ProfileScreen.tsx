@@ -74,25 +74,10 @@ const ProfileScreen = ({ navigation }: any) => {
             <Text style={styles.editAvatarButtonText}>✏️</Text>
           </TouchableOpacity>
         </View>
-
-        {/* <View style={styles.statsContainer}>
-          <View style={styles.statItem}>
-            <Text style={styles.statNumber}>{user.posts}</Text>
-            <Text style={styles.statLabel}>Publicaciones</Text>
-          </View>
-          <View style={styles.statItem}>
-            <Text style={styles.statNumber}>{user.followers}</Text>
-            <Text style={styles.statLabel}>Seguidores</Text>
-          </View>
-          <View style={styles.statItem}>
-            <Text style={styles.statNumber}>{user.following}</Text>
-            <Text style={styles.statLabel}>Siguiendo</Text>
-          </View>
-        </View> */}
-      </View>
+        </View>
 
       {/* Información del usuario */}
-      <View style={styles.infoContainer}>
+        <View style={styles.infoContainer}>
         <Text style={styles.name}>{user.name}</Text>
         <Text style={styles.username}>{user.username}</Text>
 

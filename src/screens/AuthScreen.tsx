@@ -68,7 +68,7 @@ const AuthScreen = ({ navigation }: any) => {
                     >
                     <Text style={styles.buttonText}>Iniciar Sesión</Text>
             </TouchableOpacity>
-            <Text style={styles.registerText}>¿No tienes cuenta? </Text>
+            <Text style={styles.registerText}></Text>
             <Text style={styles.registerText}></Text>
             <TouchableOpacity 
                      // boton para pasar a la pantalla de GeneralScreen
@@ -76,15 +76,14 @@ const AuthScreen = ({ navigation }: any) => {
                       onPress={() => navigation.navigate('Todo')}
                       activeOpacity={0.7} // Feedback táctil suave
                     >
-                      <Text style={styles.buttonText}>Registrate</Text>
+                      <Text style={styles.buttonText}>Sin Registro</Text>
             </TouchableOpacity>
             <Text style={styles.buttonText}></Text>
             <TouchableOpacity 
               style={[styles.button, styles.googleButton]}
-              onPress={() => console.log('Google login')}
+              onPress={() => navigation.navigate('Todo')}
             >
-              <AntDesign name="google" size={20} color="white" />
-              <Text style={[styles.buttonText, { marginLeft: 10 }]}>Continuar con Google</Text>
+              <Text style={styles.buttonText}>Sin Datos</Text>
             </TouchableOpacity>
            
 
